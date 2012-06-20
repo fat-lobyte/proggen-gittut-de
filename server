@@ -1,0 +1,516 @@
+====== Git Repositories hosten ======
+
+In diesem Kapitel möchte ich Kurz darauf eingehen, wie man seine Repositories nun der Öffentlichkeit verfügbar macht.
+Hier gibt es - wie bei Git so üblich - viele Möglichkeiten zum Ziel. Es ist wichtig ein paar Konzepte zu verstehen:
+
+===== Bare Repository vs. Working Copy =====
+
+Zwei Begriffe Möchte ich hier erklären.
+
+Die Arbeitskopie: \\
+Die Arbeitskopie ist das Projektverzeichnis mit allen ausgecheckten (also verwalteten) Projektdateien. Es enthält zusätzlich zu den Projektdateien noch das .git Verzeichnis, das Alle Kontrolldateien enthält.
+
+
+Das Bare Repository: \\
+Tatsächlich ist das "eigentliche" Repository immer das Verzeichnis ".git" in der Arbeitskopie. Dieses Verzeichnis enthält schon alle benötigten Informationen! Beispielsweise können wir einfach das .git Verzeichnis einer Arbeitskopie in ein leeres Verzeichnis kopieren und so auch die Arbeitskopie wiederherstellen. Angenommen ihr seid in einer Git Arbeitskopie sieht das so aus:
+
+<code text>$ mkdir /tmp/empty
+$ cp -r .git /tmp/empty/
+$ cd /tmp/empty
+$ git reset --hard HEAD</code> \\
+
+
+Das .git Verzeichnis kann auch für sich alleine stehen, und kann von alle Operationen referenziert werden. Wenn das .git Repository für sich alleine steht, nennt man es **Bare Repository**.
+
+
+Merke: //Der Inhalt eines Bare Repositories ist der gleiche wie der Inhalt des .git Verzeichnisses einer Arbeitskopie.//
+
+Ihr könnt das Bare Repository nennen wie ihr wollt, es gibt aber die Konvention Repositories die gehostet werden projektname.git zu nennen.
+
+In diesem Artikel werde ich das Verzeichnis des Repositories mit dem Symbol $GIT_DIR bezeichnen, es steht sowohl für ein .git-Verzeichnis eines ausgecheckten repositories als auch für ein Bare Repository.
+
+
+
+Um ein leeres Repository **mit** Arbeitskopie zu erstellen, muss in ein leeres Verzeichnis wechseln und ''git init'' ausführen.
+Aber **Achtung**! Repositories mit Arbeitskopien zu hosten ist eine schlechte Idee. Wenn dorthin gepusht wird, hat derjenige dem die Arbeitskopie gehört ziemliche Probleme und es kann zu unerwarteten Problemen kommen.\\
+Deswegen sollte man immer nur sogenannte "Bare Repositories" hosten. Ein Bare Repository ist ein Repository **ohne** Arbeitskopie. \\
+
+
+Um ein leeres Bare Repository zu erstellen, muss man es mit ''git init --bare'' initialisieren. \\
+Ihr könnt gleich darauf euer Vorhandenes Repository dorthin pushen.
+
+===== Objects und Refs =====
+
+Weiters sollte man wissen, dass ein Git Repository hauptsächlich ((woraus genau es besteht könnt ihr auf [[http://www.kernel.org/pub/software/scm/git/docs/gitrepository-layout.html|gitrepository-layout(5)]] nachlesen)) aus zwei Dingen besteht:
+  * objects
+  * refs
+
+
+objects sind alle "Objekte" eines Repositories. Diese Objekte sind eines der folgenden:
+  * blob (Dateien)
+  * tree (Verzeichnisse)
+  * commit
+
+Der Namen eines Objekts ist immer sein SHA1-Hash-Wert, und die Objekte sind im Verzeichnis $GIT_DIR/objects abgespeichert.
+
+Ein tree Objekt stellt eine verzeichnisebene dar und enthält Referenzen auf blob-Objekte (die in dieser Verzeichnisebene gespeicherten Dateien) oder auf weitere tree-Objekte (Unterverzeichnisse).
+
+Ein commit-Objekt enthält Referenzen auf den (oder die ((ist der commit ein merge-commit, so hat er mehrere vorhergehende commits)) )  vorhergehenden Commit (den sogenanntem "parent") und auf ein tree-Objekt.
+\\
+
+
+refs sind Referenzen auf diese Objekte und einfache Dateien im $GIT_DIR/refs Verzeichnis. Sie beinhalten nur den Hash des Commits, auf den sie referenzieren. Und so funktioniert auch das repository: Kennt man ein bestimmtes commit-Objekt, so kann man daraus die ganze Geschichte des Codes zurückverfolgen.
+Branches sind somit nichts anderes als Referenzen auf commit-Objekte.
+
+Wer mehr über Objects und refs erfahren möchte, für den könnte das Buch [[http://progit.org/book/ch9-0.html|Pro Git]] interessant sein.
+
+------------------------
+
+Wie sind nun die objects und refs fürs Hosten relevant? Ganz einfach. Alle, die an einem Projekt mitarbeiten, müssen Objects erstellen dürfen. Bestimmte Leute müssen refs bearbeiten und erstellen können, und hier geschieht auch die genaue Steuerung der Zugriffsrechte.
+
+===== Methoden =====
+
+Hier sind einige Methoden aufgelistet, wie ihr ein Git Repository hosten könnt. \\
+Ich habe zu jeder Methode ein kleine Tabelle hinzugefügt, die eine Zusammenfassung der Eigenschaften beschreibt.
+
+
+==== Methode 0 - Ein lokales Repository ====
+
+| Zur Installation benötigt      | -        |
+| Zum Betreiben benötigt         | git      |
+| Öffentlicher Lesezugriff       | Nein     |
+| Öffentlicher Schreibzugriff    | Nein     |
+| Benötigte Rechte für User      | Lokaler Account |
+| Schwierigkeit                  | Leicht   |
+\\
+Diese nicht-Methode ist eigentlich nützlicher als sie Aussehen mag. Dazu kopiert einfach das Repository an einen Ort auf eurem Dateisystem (entweder mit ''cp -r .git ein/pfad'' oder mit ''git clone --bare'').
+
+Dies ist nun schon alles, ihr könnt es jetzt verwenden. Ihr könnt es ganz normal, wie ein entferntes Repository verwenden und es als remote hinzufügen, dorthin pushen oder von dort pullen.
+
+Wozu es vielleicht nützlich sein könnte: Habt ihr mehrere Entwickler auf einer Maschine (sei es eine die ihr irgendwo stehen habt oder aber auch ein entfernter Server auf den ihr nur über Shell-Accounts Zugriff habt), können diese Entwickler so sicher Änderungen austauschen. Aber auch einfach für euch persönlich als "Backup" repository kann es nützlich sein. \\
+Was ich gerne mache ist ein Repository auf einem USB-Stick, mit dem ich dann unterwegs arbeiten kann. Sind die remotes meines Repos auf meinem Hauptrechner richtig gesetzt, kann ich so die Änderungen mit einem einfachen pull abholen.
+
+
+==== Methode 1 - Ein "dummes" Git Repository ====
+
+| Zur Installation benötigt      | git        |
+| Zum Betreiben benötigt         | http oder ftp server      |
+| Öffentlicher Lesezugriff       | Ja     |
+| Öffentlicher Schreibzugriff    | Nein     |
+| Benötigte Rechte für User      | - |
+| Schwierigkeit                  | Leicht   |
+\\
+Mit dieser Methode könnt ihr ganz leicht öffentliche lese-Repositories hosten. Dazu müsst ihr einfach nur folgende Dinge tun:
+  * Euer bare-Repository erstellen und/oder kopieren
+  * In diesem Repository ''git update-server-info''
+  * Das repository an einen Ort kopieren wo euer FTP/HTTP Server das sieht. Das wäre z.B. /var/www bei einer Standard-Apache-Installation oder /home/ftp bei einer Standard vsftpd installation.
+
+Schon seid ihr fertig. Ihr könnt auf das Repository über die URL zugreifen. Heißt das Verzeichnis z.B. "eurprojekt.git", und hat euer Server die domain "example.org" könnt ihr auf das Repository über die URL http://example.org/euerprojekt.git bzw. ftp://example.org/euerprojekt.git zugreifen.
+
+Allerdings müsst ihr wissen, dass ihr jedes mal wenn ihr am Repository etwas ändert ihr nochmal ''git update-server-info'' aufrufen müsst. Wozu man [[http://www.kernel.org/pub/software/scm/git/docs/git-update-server-info.html|git-update-server-info(1)]] braucht: normalerweise werden die refs und die objects beim pullen von einem Server gepackt (und beim pushen auf den Server entpackt). Da die FTP und HTTP Server aber keine Ahnung von Git haben, können sie das nicht tun - es muss den Clients zusätzliche Information bereitgestellt werden damit dieser Weiß welche refs und objects es auf dem Server gibt.
+
+Da es nicht sehr praktikabel ist update-server-info nach jedem commit aufzurufen kann man sich hier der [[http://www.kernel.org/pub/software/scm/git/docs/githooks.html|githooks(5)]] bedienen. Das sind kleine Skripte, die zu bestimmten Zeitpunkten bei bestimmten Aktionen automatisch von git aufgerufen werden. In diesem Fall ist das post-update hook interessant. Hier kann man update-server-info nach jedem update aufrufen lassen.
+Dazu kopiert die Datei $GIT_DIR/hooks/post-update.sample einfach nach $GIT_DIR/hooks/post-update, oder erstellt die Datei mit dem Inhalt <code bash>#!/bin/sh
+exec git update-server-info</code> einfach selbst.
+
+==== Methode 2 - Git Daemon ====
+
+| Zur Installation benötigt      | -        |
+| Zum Betreiben benötigt         | [[http://www.kernel.org/pub/software/scm/git/docs/git-daemon.html|git-daemon(1)]]     |
+| Öffentlicher Lesezugriff       | Ja     |
+| Öffentlicher Schreibzugriff    | Nein     |
+| Benötigte Rechte für User      | - |
+| Schwierigkeit                  | Leicht   |
+\\
+Dies ist ebenfalls eine der einfachsten Methoden ein Repository zu hosten. Um das Repository zu hosten braucht ihr einfach nur den [[http://www.kernel.org/pub/software/scm/git/docs/git-daemon.html|git-daemon(1)]], das sollte bei jeder Git Distribution mit dabei sein.
+
+Um es zu hosten, markiert ihr das zu hostende Repository mit einer Datei mit dem Namen "git-daemon-export-ok". Der Inhalt ist egal, aber ihr müsst sie in das bare Repository legen (das bedeutet wenn es eine ausgecheckte Arbeitskopie ist, dann muss die Datei im .git/-Verzeichnis liegen).
+
+Startet dann den Daemon mit ''git daemon'', und schon ist euer Repository gehostet. Wenn euer Server die Domain "example.org" hat, und ihr das Repository unter /gitroot/proj.git abgelegt habt, könnt ihr nun darauf mit der URL <nowiki>git://example.org/gitroot/proj.git</nowiki> zugreifen.
+
+Das war die Kurzversion. Es gibt einige Einstellungen die ihr alle in der [[http://www.kernel.org/pub/software/scm/git/docs/git-daemon.html|manpage]] findet.
+
+Um den Server dauerhaft (also auch nach Neustart) zu installieren, muss man ihn von den Startskripten (z.B. init-Skripte) eurer Distribution starten. Debian und Ubuntu stellen dazu das Paket git-daemon-run bereit.
+Für die derzeitige aktuelle Version des Pakets (1:1.7.1-1) besteht das einrichten lediglich darin, dass man in /var/cache/git einen symbolischen link zu den zu exportierenden repositories verzeichnissen erstellt:
+<code text># ln -s /gitroot/proj.git /var/cache/git/</code>
+Schon könnt ihr auf das Repository über die URL <nowiki>git://example.org/git/proj.git</nowiki> zugreifen.
+
+==== Methode 3a - Mehrere Shell Accounts ====
+
+
+| Zur Installation benötigt      | -        |
+| Zum Betreiben benötigt         | git, sshd     |
+| Öffentlicher Lesezugriff       | Ja     |
+| Öffentlicher Schreibzugriff    | Ja     |
+| Benötigte Rechte für User      | Shell Account |
+| Schwierigkeit                  | Mittel   |
+\\
+Für diese Methode braucht jeder Nutzer auf dem Server, der das Repository hosten soll einen Shell Account. Dazu muss man auf dem Server für jeden User einen Account anlegen - entweder mit [[http://linux.die.net/man/8/adduser|adduser(8)]] oder mit eurem Lieblingbenutzerverwaltungstool. \\
+Wenn ihr den Usern außer Git auf diesem Server nichts erlauben wollt, könnt ihr die Login Shell der User auf die [[http://www.kernel.org/pub/software/scm/git/docs/git-shell.html|git-shell(1)]] beschränken (das macht ihr indem ihr in der /etc/passwd das letzte Feld des users ändert). Das erlaubt nur die Ausführung von git-receive-pack  und git-upload-pack, alles andere ist nicht erlaubt.
+
+Legt nun ein Verzeichnis für das Repository an, zum Beispiel /gitroot/proj.git.
+Wechselt in das zu hostende Verzeichnis, und legt dort ein Bare Repository an:
+\\
+<code text># mkdir -p /gitroot/proj.git
+# chown -R euerlogin:projekgruppe /gitroot/proj.git
+$ cd /gitroot/proj.git
+$ git init --bare
+</code>
+\\
+
+Stellt sicher, dass der User Zugriffsrechte (Schreib- oder Leserechte, je nachdem wie ihr es einrichten wollt) hat. Wenn das Repository nur einem User zur Verfügung gestellt werden soll, gebt ihr nur dem User die Rechte. Wenn ihr allerdings das Repository für mehrere Benutzer verfügbar machen wollt, müsst ihr das Repository einer Unix-Gruppe zuordnen, und alle Entwickler dieser Gruppe hinzufügen; die Rechteverwaltung entspricht hier genau der Rechteverwaltung von Unix.
+
+Schon ist das Repository gehostet. Wenn euer Server die domain example.org hat, können die User nun über die URL <nowiki>ssh://euerlogin@example.org/gitroot/proj.git</nowiki> zugreifen.
+
+Nachteil dieser Methode ist, dass ihr wenig Kontrolle darüber habt was die User mit dem Repository anstellen.
+
+==== Methode 3b - Ein Shell Account ====
+| Zur Installation benötigt      | -        |
+| Zum Betreiben benötigt         | git, sshd     |
+| Öffentlicher Lesezugriff       | Ja     |
+| Öffentlicher Schreibzugriff    | Ja     |
+| Benötigte Rechte für User      | Öffentlicher ssh Schlüssel eingetragen |
+| Schwierigkeit                  | Mittel   |
+
+Alternativ dazu, jedem User einen eigenen Account zu geben kann man auch nur einen Account erstellen (traditionell "git" genannt), und die Öffentlichen ssh-Schlüssel in das authorized_keys file einzutragen.
+
+Dazu folgt man den Anweisungen von [[#methode_3a_-_shell_account|oben]] um ein Repository einzurichten, als Benutzername für den einen Accout verwenden wir "git".
+
+
+
+Anschließend generiert jeder Entwickler ein ssh Schlüsselpaar (sofern er noch keines hat), mit folgendem Befehl:
+<code text>ssh-keygen -t rsa -C "entwickler@example.com"</code>
+Dann schickt er den Öffentlichen Schlüssel, der Standardmäßig die Datei ~/.ssh/id_rsa.pub ist an den Systemadministrator.
+
+Der Systemadministrator fügt nun den Öffentlichen Schlüssel jedes Entwicklers zum authorized_keys file des Users "git" hinzu:
+
+<code text>
+# cat /tmp/id_rsa.john.pub >> ~/.ssh/authorized_keys
+# cat /tmp/id_rsa.josie.pub >> ~/.ssh/authorized_keys
+# cat /tmp/id_rsa.jessica.pub >> ~/.ssh/authorized_keys
+</code>
+
+
+Nun kann jeder eingetragene Entwickler mit der Adresse <nowiki>ssh://git@example.org/gitroot/proj.git</nowiki> auf das Repository zugreifen.
+
+
+==== Methode 3c - Mehrere Shell Accounts mit githooks(5) zur Zugriffskontrolle ====
+
+| Zur Installation benötigt      | -        |
+| Zum Betreiben benötigt         | git, sshd     |
+| Öffentlicher Lesezugriff       | Ja     |
+| Öffentlicher Schreibzugriff    | Ja     |
+| Benötigte Rechte für User      | Shell Account |
+| Schwierigkeit                  | Schwierig   |
+
+Githooks sind Skripte, die in einem Git Verzeichnis liegen und zu bestimmten Zeitpunkten bei bestimmten Aktionen aufgerufen werden.
+Hier kann man einiges an Spielzeug einbauen, beispielsweise kann man den post-receive-hook dazu verwenden über bestimmte Ereignisse per E-Mail benachrichtigt zu werden.
+Welche hooks es gibt und wie sie verwendet werden, kann man auf der [[http://www.kernel.org/pub/software/scm/git/docs/githooks.html|githooks(5)]] manpage nachlesen.
+
+Unter anderem kann man die hook-Skripte zur Zugriffskontrolle benutzen. In diesem Fall ist für uns ein bestimmter hook interessant:
+
+Der "update" hook. Er wird aufgerufen nachdem git-receive-pack aufgerufen wurde (also die Objekte Hochgeladen wurden) aber bevor die refs upgedatet werden.
+
+Als Argument wird dem Hook folgendes übergeben:
+  * Der Name des upzudatenden refs
+  * Der Name des alten, im ref gespeicherten Objekts
+  * Der Name des neuen, im ref zu speichernden Objekt
+
+Gibt das Skript 0 zurück, wird der update des refs erlaubt. Gibt das Skript nicht 0 zurück, wird der update des refs verweigert.
+
+
+Hier sieht man auch eine gute Möglichkeit zur Zugriffskontrolle: man schreibt ein Skript das überprüft ob die operation erlaubt ist und einen entsprechenden Rückgabewert liefert und legt es dann ins repository mit dem Namen $GIT_DIR/hooks/update.
+(Selbstverständlich muss der Interpreter für das Skript auf dem System installiert sein)
+
+Glücklicherweise gibt es ein kleines Beispielskript von einem Git Entwickler, das recht gut für unsere Zwecke funktioniert. Das Original ist auf der [[http://www.kernel.org/pub/software/scm/git/docs/howto/update-hook-example.txt|Git-Webseite]] zu finden.
+
+Hier ist eine minimal veränderte ((/bin/bash durch /bin/sh ersetzt und funktionseklarationen geändert damit das Skript auch mit dash funtioniert)) und mit zusätzlichen Kommentaren besetzte Version des Skriptes:
+
+<code bash>#!/bin/sh
+
+umask 002
+
+# If you are having trouble with this access control hook script
+# you can try setting this to true.  It will tell you exactly
+# why a user is being allowed/denied access.
+
+verbose=false
+
+# Default shell globbing messes things up downstream
+GLOBIGNORE=*
+
+grant() {
+  $verbose && echo >&2 "-Grant-     $1"
+  echo grant
+  exit 0
+}
+
+deny() {
+  $verbose && echo >&2 "-Deny-      $1"
+  echo deny
+  exit 1
+}
+
+info() {
+  $verbose && echo >&2 "-Info-      $1"
+}
+
+# Implement generic branch and tag policies.
+# - Tags should not be updated once created.
+# - Branches should only be fast-forwarded unless their pattern starts with '+'
+case "$1" in
+  refs/tags/*)
+    # if the old tag exists git rev-parse will NOT fail, and therefore
+    # deny will be exucuted.
+    git rev-parse --verify -q "$1" &&
+    deny >/dev/null "You can't overwrite an existing tag"
+    ;;
+  refs/heads/*)
+    # No rebasing or rewinding
+    if expr "$2" : '0*$' >/dev/null; then # if the old branch is 0000 (aka did not exist) ...
+      info "The branch '$1' is new..."
+    else
+      # updating -- make sure it is a fast-forward
+      mb=$(git-merge-base "$2" "$3") #find best common ancestor aka "merge-base"
+      case "$mb,$2" in
+        # if the merge-base is the old commit, it's called fast-forward
+        "$2,$mb") info "Update is fast-forward" ;;
+        # if the merge-base it's something else,
+        # the merge is non-trivial, set noff variable to true
+        *) noff=y; info "This is not a fast-forward update.";;
+      esac
+    fi
+    ;;
+  *)
+    deny >/dev/null \
+    "Branch is not under refs/heads or refs/tags.  What are you trying to do?"
+    ;;
+esac
+
+# Implement per-branch controls based on username
+allowed_users_file=$GIT_DIR/info/allowed-users
+username=$(id -u -n)
+info "The user is: '$username'"
+
+if test -f "$allowed_users_file" # if there's a file called allowed-users
+then
+  # cat the allowed-users file, filter empty lines and comment lines
+  rc=$(cat $allowed_users_file | grep -v '^#' | grep -v '^$' |
+    # pipe it to read
+    while read heads user_patterns # read pairs of heads and user patterns
+    do
+      # does this rule apply to us?
+      head_pattern=${heads#+} # remove prefixed plus if it's there
+       # match updated ref against ref pattern
+      matchlen=$(expr "$1" : "${head_pattern#+}")
+      # if the ref pattern doesnt match completely, skip this line
+      test "$matchlen" = ${#1} || continue
+
+      # if non-ff, $heads must be with the '+' prefix
+      test -n "$noff" &&
+      # if it's not a fast forward merge and there is no + prefixing the
+      # pattern, skip this line
+      test "$head_pattern" = "$heads" && continue
+
+      info "Found matching head pattern: '$head_pattern'"
+      for user_pattern in $user_patterns; do # for every user in the line,
+    info "Checking user: '$username' against pattern: '$user_pattern'"
+    # match against the current user
+    matchlen=$(expr "$username" : "$user_pattern")
+    if test "$matchlen" = "${#username}"
+    then
+      grant "Allowing user: '$username' with pattern: '$user_pattern'"
+    fi
+      done
+      deny "The user is not in the access list for this branch"
+    done
+  )
+  case "$rc" in # grant or deny depending on the outcome of the above loop
+    grant) grant >/dev/null "Granting access based on $allowed_users_file" ;;
+    deny)  deny  >/dev/null "Denying  access based on $allowed_users_file" ;;
+    *) ;;
+  esac
+fi
+
+allowed_groups_file=$GIT_DIR/info/allowed-groups
+groups=$(id -G -n)
+info "The user belongs to the following groups:"
+info "'$groups'"
+
+# same as above but with groups instead of users
+if test -f "$allowed_groups_file"
+then
+  rc=$(cat $allowed_groups_file | grep -v '^#' | grep -v '^$' |
+    while read heads group_patterns
+    do
+      # does this rule apply to us?
+      head_pattern=${heads#+}
+      matchlen=$(expr "$1" : "${head_pattern#+}")
+      test "$matchlen" = ${#1} || continue
+
+      # if non-ff, $heads must be with the '+' prefix
+      test -n "$noff" &&
+      test "$head_pattern" = "$heads" && continue
+
+      info "Found matching head pattern: '$head_pattern'"
+      for group_pattern in $group_patterns; do
+    for groupname in $groups; do
+      info "Checking group: '$groupname' against pattern: '$group_pattern'"
+      matchlen=$(expr "$groupname" : "$group_pattern")
+      if test "$matchlen" = "${#groupname}"
+      then
+        grant "Allowing group: '$groupname' with pattern: '$group_pattern'"
+      fi
+        done
+      done
+      deny "None of the user's groups are in the access list for this branch"
+    done
+  )
+  case "$rc" in
+    grant) grant >/dev/null "Granting access based on $allowed_groups_file" ;;
+    deny)  deny  >/dev/null "Denying  access based on $allowed_groups_file" ;;
+    *) ;;
+  esac
+fi
+
+# if thread of execution has come to this point, apparantly no rules have been
+# matched and the update is denied.
+deny >/dev/null "There are no more rules to check.  Denying access"
+</code>
+
+
+Diese Datei erwartet, dass im Git Verzeichnis eine Datei liegt, die die Gruppen und/oder Usernamen ihren Befugnissen zuordnet. Diese sind $GIT_DIR/info/allowed-users und/oder $GIT_DIR/info/allowed-groups.
+
+Eine solche Datei sieht zum Beispiel so aus:
+<code text>refs/heads/master   junio bigboss
++refs/heads/pu      junio
+refs/heads/cogito$  pasky
+refs/heads/tmp/.*   .*
+refs/tags/v[0-9].*  junio</code>
+Jede Zeile enthält:
+  * Ein optionales plus
+  * Eine Regex ((Regulärer Ausdruck, siehe [[http://manpages.ubuntu.com/manpages/intrepid/man7/regex.7.html|regex(7)]])), die auf den ref passt, den die user updaten oder erstellen dürfen
+  * Ein oder mehrere Regex für jeden User, der den ref updaten oder erstellen darf
+
+In diesem Beispiel darf nur junio und bigboss auf den master branch zugreifen, pasky nur auf den "cogito" branch, junio darf auf den pu branch sogar nicht fast-forward-updates machen, jeder darf unter refs/heads/tmp branches erstellen und nur junio darf Versions-Tags setzen.
+
+
+Zusammenfassend muss man also für diese Methode die folgenden schritte durchführen:
+  * Accounts für Entwickler erstellen
+  * Repository einrichten (siehe oben)
+  * das obige Beispielskript als $GIT_DIR/hooks/update abspeichern
+  * eine $GIT_DIR/info/allowed-users und/oder $GIT_DIR/info/allowed-groups datei anlegen und nach den eigenen bedürfnissen konfigurieren
+  * Testen, ob das ganze auch tut was es soll.
+
+
+
+==== Methode 4 - gitosis ====
+
+| Zur Installation benötigt      | gitosis        |
+| Zum Betreiben benötigt         | git, sshd, gitosis     |
+| Öffentlicher Lesezugriff       | Ja     |
+| Öffentlicher Schreibzugriff    | Ja     |
+| Benötigte Rechte für User      | Öffentlicher ssh Schlüssel eingetragen |
+| Schwierigkeit                  | Mittel   |
+
+Gitosis ist ein Satz von Python-Skripten, die das Management von mehreren Git Repositories vereinfachen. Es arbeitet auf der Basis von öffentlichen ssh Schlüsseln und ist besonders in der Weise, dass die Konfiguration ebenfalls über ein Git-Repository erstellt.
+
+Man erhält es entweder wie gewohnt über den Paketmanager eurer Distribution, oder man checkt das git Repository aus, und installiert es dann wie folgt:
+
+<code text>admin@example.com$ git clone git://eagain.net/gitosis.git
+admin@example.com$ cd gitosis
+admin@example.com$ sudo python setup.py install</code>
+
+Dazu wird ein Python Interpreter und die Python-Setuptools benötigt.
+
+Anschließend benötigt gitosis einen eigenen Benutzer und ein Homeverzeichnis um zu laufen. Wenn der Paketmanager nicht bereits einen Erstellt hat, kann man das händisch machen. In diesem Beispiel wird der Benutzer "git" heißen, und sein Homeverzeichnis soll in /srv/gitosis liegen. Das kann man mit adduser machen:
+
+<code text>root@example.com# adduser \
+            --system \
+            --shell /bin/sh \
+            --gecos 'git repository hosting' \
+            --group \
+            --disabled-password \
+            --home /srv/gitosis \
+            gitosis</code>
+\\
+Selbstverständlich muss das Homeverzeichnis für den Benutzer schreib- und lesbar sein.
+Nun muss der User "git" den Befehl "gitosis-init" aufrufen. Allerdings haben wir ihn seines logins beschnitten indem wir kein Passwort gesetzt haben. Jetzt schafft das Programm "sudo" abhilfe, das Programme mit anderen Benutzerdaten ausführen kann, wenn der User genügend (in diesem Fall root-) Rechte besitzt. Der Aufruf sieht so aus:
+<code text>
+admin@example.com$ cd /srv/gitosis
+admin@example.com$ sudo -H -u git gitosis-init < admins-ssh-key.pub
+</code>
+Der switch "''-u git''" bedeutet, dass das Programm als User "git" ausgeführt werden soll "'''-H''" bedeutet, sudo soll auch die HOME Variable auf das richtige Homeverzeichnis von "git" setzen.
+gitosis-init erwartet von der Standardeingabe den öffentlichen ssh-Schlüssel des Administrators der Repositories (
+Der Administrator kann seinen Key mithilfe von "''cat ~/.ssh/id_rsa.pub''" auf der Konsole anzeigen lassen). Hier wird der Schlüssel gleich aus der datei ''admins-ssh-key.pub'' eingelesen.
+
+''gitosis-init'' erstellt nun zwei Verzeichnisse, einerseits das "gitosis"-Verzeichnis, andererseits das "repositories"-Verzeichnis, in denen die Repositories gespeichert werden.
+
+Diese Verzeichnisse lassen wir aber unangetastet! Die weitere Konfiguration erfolgt nämlich nicht mehr auf dem Server, sondern über ein git repository auf das nur der Administrator zugreifen darf.
+\\
+Der Administrator muss jetzt auf seinem Rechner zu hause nämlich ein bestimmtes Repository klonen, das geht mit folgendem Kommando:
+
+<code text>admin@admins-pc$ git clone git@example.com:gitosis-admin.git</code>
+
+Dazu muss selbtverständlich der ssh-Schlüsses des Administrators zum vorher auf dem Server eigetragenen Schlüssel passen.
+
+Jetzt hat der Admin ein lokales Repository namens "gitosis-admin", es enthält eine Konfigurationsdatei Namens "gitosis.conf" und ein Verzeichnis mit dem Namen "keys".
+
+Wie ihr euch wahrscheinlich schon denkt kommen in das "keys/"-Verzeichnis die öffentlichen Schlüssel der beteiligten Entwickler:
+<code text>admin@admins-pc$ ls keydir
+administrator.pub anna.pub bernd.pub</code>
+Beim ersten clone enthält das Verzeichnis nur den Key des Administrators, ich habe hier noch zwei Schlüsseldataien hinzugefügt - "anna.pub" und "bernd.pub".
+
+Eine gitosis.conf Datei sieht beispielweise so aus:
+<code text>[gitosis]
+
+[group gitosis-admin]
+writable = gitosis-admin
+members = fat-lobyte
+
+[group tolle-gruppe]
+writable = tollesprojekt
+members = anna bernd
+
+[group normale-gruppe]
+writable = normalesprojekt
+members = bernd
+</code>
+
+Hier ist fat-lobyte der Admin, anna und bernd können auf "tollesprojekt.git" zugreifen und bernd hat noch etwas auf der Seite laufen und darf noch auf "normalesprojekt.git" zugreifen.
+
+Zu beachten ist, dass die Namen der Dateien für die Schlüssel den Benutzernamen zugeordnert werden. Beispielsweise gibt es den Benutzer "anna" nur dann, wenn im "keys/"-Verzeichnis eine Schlüsseldatei mit dem Namen "anna.pub" liegt.
+
+
+Nachdem ihr die Schlüssel eurer Entwickler hinzugefügt habt und die "gitosis.conf" geändert habt, müsst ihr sie commiten und auf den Server pushen:
+<code text>admin@admins-pc$ git add keys/ # alle neuen im keys/ verzeichnis für den commit bereitstellen
+admin@admins-pc$  # Änderungen commiten, "-a" heißt das alle bekannten geänderten Dateien auch commitet werden
+admin@admins-pc$ git commit -a -m "Anna und Bernds Schlüssel und Projekt hinzugefügt"
+admin@admins-pc$ git push # Änderungen hochladen
+</code>
+
+Die Änderungen werden sofort nach eurem Push wirksam (natürlich nur sofern der Push funktioniert), denn auf dem gitosis-admin.git Repository auf dem Server wird der "post-update" Hook aufgerufen, der alles nötige in die Wege leitet.
+
+Bis jetzt wurden allerdings nur die Erlaubnisse für die repositories gesetzt. Die Repositories auch tatsächlich zu erstellen liegt in der Verantwortung der User. Das funktioniert ganz einfach durch einen Push auf das neue Repository:
+
+<code text>anna@annaspc$ git remote add origin git@example.com:tollesprojekt.git
+anna@annaspc$ git push origin master <andere branches...>
+</code>
+
+Schon ist das Repository erstellt. Anna kann jetzt allerdings nur auf das Repository tollesprojekt.git zugreifen. Versucht sie auf bernds eigenes Projekt zuzugreifen, gibts eine Fehlermeldung:
+<code text>anna@annaspc$ git remote add origin git@example.com:normalesprojekt.git
+anna@annaspc$ git push origin master
+ERROR:gitosis.serve.main:Repository read access denied
+fatal: The remote end hung up unexpectedly
+</code>
+
+Somit ist man auch schon fertig.
+
+==== Methode 5 - gitolite ====
+
+FIXME
+
+------------------------
+
+Hat dir diese Antwort geholfen? Wenn nicht oder wenn du Verbesserungs- bzw. Erweiterungsvorschläge hast, dann schreib das bitte einfach auf die [[http://forum.proggen.org/viewtopic.php?f=39&t=830|Diskussionsseite]].
+

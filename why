@@ -1,0 +1,76 @@
+====== Warum ein Versionsverwaltungssystem ======
+
+
+Ihr werdet euch vielleicht fragen, wieso viele Entwickler so von Versionsverwaltungssystemen (das ich ab jetzt als VCS, vom englischen "version control system" abkürzen werde) wie Git, Subversion (SVN), Mercurial oder Bazaar schwärmen. \\
+Was sind die Vorteile von solchen Systemen? Wieso sollte ich mir die Arbeit antun und mir schon wieder ein Tool herunterladen, das ich erst beherrschen lernen muss?
+
+===== Das Problem =====
+
+
+Nun, die Vorteile beginnen dort wo die Probleme mit der Versionierung starten. \\
+
+Nehmen wir an, ihr habt ein kleines Projekt am laufen das ihr zurzeit in einem Ordner verwaltet. Ihr bearbeitet direkt die Dateien im Ordner und treibt es voran.
+Ab und an macht ihr ein Release, bei dem ihr alle Dateien in eine Zip-Datei packt.
+Ihr schreibt eine nette Funktion, die ihr gleich in euer Projekt einbaut. Allerdings kommt ihr drauf, dass ihr das was die Funktion tut nicht braucht und entfernt sie wieder. \\
+Wochen später schreibt ihr eine ähnliche Funktion und kommt drauf: "Hey, das hab ich schon mal geschrieben!". Und hier beginnt es. Wisst ihr noch in welchem Release die Funktion war? Dann müsst ihr jetzt erstmal die richtige Zip-Datei ausgraben. Was aber wenn ihr seit dem ihr die Funktion geschrieben habt kein Release gemacht habt? Dann ist eure schöne Funktion jetzt weg und ihr müsst sie neu schreiben. \\
+
+Ein weiteres Problem: ihr schreibt ein supertolles neues Feature. Bis das Feature aber ausgereift ist braucht es einige Zeit und viele Einzelschritte. Was macht ihr, wenn ihr seit dem letzten mal Zip-Datei packen zehn Bildschirmseiten Code geschrieben habt, und draufkommt, dass ihr irgendwann bei der vorletzten Änderung groben Mist gebaut habt? Nochmal von vom letzten Release anfangen kommt nicht in Frage, denn ihr habt auch viel nützliches Zeug seitdem geschrieben. \\ 
+Also bleibt euch nur im Code zu graben und alle Änderungen die ihr vorletztes Mal gemacht wieder rückgängig zu machen. Wisst ihr noch genau was ihr gemacht habt? Wisst ihr noch wo es sich befindet? Selbst wenn die Antwort "Ja" lautet: es ist schon schwer genug eure Arbeit rückgängig zu machen, und da müsst ihr es sogar noch von Hand machen.
+
+
+===== Die Lösung =====
+
+Ihr seht, "manuelle" VCS ist ermüdend und lästig. Wenn beim Programmieren etwas lästig ist, ist es meist ein Zeichen davon, dass es schlecht ist. Wenn ihr Programmiert, wollt ihr Programmieren und nicht Dateien und Dateiteile suchen. \\ 
+Und hier kann euch ein VCS helfen: es hilft euch eure Änderungen zu verfolgen, euren Inhalt zu verwalten, älteren Inhalt wiederzufinden und die Entwicklung nachzuverfolgen. \\
+Bei einem VCS verwaltet ihr eure Datei als eine Serie von "Änderungen". Habt ihr ein neues Feature geschrieben, wird es als "Änderung" im VCS gespeichert. Kommt wieder etwas dazu oder weg, kommt die nächste "Änderung" dazu. Dazu wie groß eine "Änderung" tatsächlich sein sollte bis sie ins VCS kommen sollte, werde ich später noch etwas sagen. \\
+Ihr könnt nun den Zustand der Datei nach jeder Änderung wiederherstellen, ihr könnt auch einfach eine Änderung rückgängig machen und von dem Punkt aus anfangen.
+Außerdem solltet ihr bei jeder Änderung eine Nachricht einfügen die die Änderung beschreibt. So entsteht eine Art "Logbuch", und eure gesamte Historie des Projekts ist nachvollziehbar.
+
+
+===== Zusammenarbeit =====
+
+Bis jetzt habe ich nur beschrieben wieso ein VCS für einen einzelnen Entwickler nützlich ist. Hier ist es zwar sehr sehr hilfreich, aber nicht absolut notwendig. Die Sache ändert sich aber spätestens dann, wenn mehrere Entwickler an einem Projekt beteiligt sind. \\ \\ 
+Stellt euch vor, Entwicklerin Anna schreibt gerade an einer Datei, Entwickler Bernd an einer anderen. Wenn die beiden fertig sind wollen sie natürlich beide Dateien zusammenschmeissen. \\ 
+Wie machen sie das? Sie müssen erstmal herausfinden wer an welcher Datei gearbeitet hat und müssen sich die Dateien dann gegenseitig schicken. Da kann Bernd schon mal ziemlich genervt sein, wenn er noch an seiner einzelnen Datei herumwerkelt und Anna schon 5 neue Dateiversionen schickt. Gut das ist zwar lästig (erinnert ihr euch was ich zum Thema lästig geschrieben habe?) aber noch fast praktikabel. \\ \\ 
+Wo es dann aber wirklich kritisch wird, ist wenn beide an der gleichen Datei arbeiten. Anna ändert eine Funktion, Bernd fügt noch zwei weitere Funktionen hinzu. Jetzt hat Annas Version die geänderte Funktion aber nicht Bernds neue Funktionen! \\
+Für Bernd siehts ähnlich aus: er hat zwar seine zwei Funktionen, aber nicht die Änderung von Anna. Was machen die beiden nun? Jetzt müsste Anna ihre Datei schicken und Bernd hätte dann die undankbare Aufgabe irgendwie aus den beiden Dateien eine zu machen und das Ergebnis wieder an Anna zu schicken. \\ \\ 
+So, und nun stellt euch vor es geht nicht nur um eine Datei sondern Bernd findet in seinem Posteingang eine Mail mit 2 neuen und 5 alten Dateien, von denen er selbst 3 geändert hat. \\
+Als Anna nun ihrerseits den Posteingang öffnet findet sie eine Mail von Bernd mit wüsten Beschimpfungen mit dem Hinweis sie soll sich ihre Änderungen sonstwohin stecken. \\ \\ 
+Hätten die zwei ein VCS verwendet, wären sie heute wahrscheinlich noch gute Freunde geblieben, denn dann hätten sie folgendes machen können: \\
+Die beiden hätten sie z.B. einen zentralen Ablageort von Dateien, der von einem Versionskontrollsystem verwaltet wird, nennen wir ihn "Repository". \\
+Dort kann jetzt jeder der beiden seine Änderungen ablegen. Sagen wir, Anna hat ihre geänderte Funktion ins Repository eingefügt. Nun kann Bern sich noch während er an seinen zwei Funktionen arbeitet die Änderungen von Anna herunterladen und sie mit seinen Änderungen mischen. Anschließend kann er seine Änderungen unabhängig von Annas dem Repository hinzufügen.
+
+
+===== Zweige und Gabelungen =====
+
+
+Ein weiterer Vorteil ist, das sich Entwicklungszweige verästeln und wieder vereinigen können. \\
+
+Anna und Bernd sind nämlich Spezialisten was Algorithmen betrifft. Kaum einer schreibt schnellere als die beiden und gemeinsam sind sie unschlagbar. Was die zwei allerdings nicht so drauf haben ist das Grafische. Das GUI ihres Programms sieht ziemlich minimalistisch aus, und kaum ansprechend für neue Nutzer. \\
+Christian ist so ein Nutzer. Er programmiert selber gerne, allerdings legt er mehr Wert aufs Äußere und ist ziemlich geübt in der Programmierung von GUIs. Er findet Annas und Bernds Projekt und ist sofort begeistert davon. Er ist sogar so begeistert, dass er das Programm gerne verbessern würde. \\ 
+
+Da Bernd und Anna große Fans von Open Source sind haben sie ihr Projekt unter eine freie Softwarelizenz gesteckt. Christian holt sich eine Kopie von Bernd und Annas Repository und legt einfach mal drauf los. Er schreibt eine tolle GUI, vom Kern des Programms hat er aber nicht viel Ahnung also ändert er dort nichts. Währenddessen arbeiten Anna und Bernd am Kern weiter, und kommen so zu vielen Verbesserungen. \\
+Jetzt haben wir zwei "Zweige", die ich ab jetzt einfach mal mit dem englischen Begriff "Branch" bezeichnen werde. \\
+Anna und Bernds Branch enthält nun einen tollen Kern, Christians Branch eine Tolle GUI. \\
+
+
+Glücklicherweise verwenden alle drei ein VCS, denn nun können die änderungen leicht gemischt werden: zuerst schreibt Christian Bernd eine Mail, und Anna und Bernd sehen sich genau an was Christian gemacht hat und wie es in ihr Projekt passt.  \\
+Da Bernd und Anna sofort begeistert von Christians GUI sind, mischen beide Branches (man sagt sie machen einen "merge"), und passen ihre Anwendung noch ein bisschen an. \\
+Was dann dabei rauskommt ist eine tolle Anwendung, die von keinem Rechner mehr wegzudenken ist. \\
+
+Und wenn sie nicht gestorben sind, dann coden sie noch heute ;-)
+
+---------------
+
+
+Ihr seht ein VCS hat viele Anwendungsfälle, es macht die Arbeit und vor allem die Zusammenarbeit leichter. Es eröffnet euch ganz neue Arbeitsweisen, unterstützt euch und macht eure Arbeit effektiver.
+Es lohnt sich für große und kleine Entwicklerteams und sogar für Einzelentwickler ein Versionskontrollsystem zu verwenden.
+
+Ich hoffe dieser (nicht so) kleine Text hat euch die Versionsverwaltung schmackhaft gemacht. Welche Versionsverwaltungssysteme es gibt, und welche für euer Projekt besser geeignet sind, könnt ihr auf [[vcs:start|hier]] nachlesen. 
+
+===== Verbesserungsvorschläge =====
+
+Hat dir diese Antwort geholfen? Wenn nicht oder wenn du Verbesserungs- bzw. Erweiterungsvorschläge hast, dann schreib das bitte einfach auf die [[http://www.proggen.org/forum/viewtopic.php?f=39&t=4569|Diskussionsseite]].
+\\
+\\
+

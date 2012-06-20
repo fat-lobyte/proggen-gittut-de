@@ -1,0 +1,38 @@
+====== Übersicht des Git- Tutorials ======
+
+Diese Seite zeigt eine Übersicht über die Kapitel des Git-Tutorials. Wer noch nicht weiß was eine Versionsverwaltung ist sollte sich zuerst einmal die [[vcs:start|Einführung]] durchlesen.
+
+===== Kapitel I - Das Porzellan =====
+
+  * [[vcs:start|0 - Wozu ein Versionsverwaltungssystem?]]
+  * [[install|1 - Git installieren]]
+  * [[makehis|2 - Geschichte schreiben (add, commit)]]
+  * [[readhis|3 - Geschichte lesen (log, reset, checkout)]]
+  * [[branching|4 - Verzweigungen erstellen und zusammenlegen (branch, merge, checkout)]]
+  * [[remote|5 - Zusammenarbeit (remote, push, fetch)]]
+  * [[rewritehis|6 - Geschichte umschreiben (rebase)]]
+  
+===== Kapitel II - Die Leitungen =====
+
+  * [[dirstruct|1 - Verzeichnisstruktur eines .git-Verzeichnisses]]
+  * [[datastruct|2 - Datenstruktur (von objects, blobs, commits und trees)]]
+  * [[lowlev|3 - Lowlevel- (plumbing-) Befehle]]
+
+===== Kapitel III - Die Tricks =====
+
+  * [[server|1 - Git Repositories hosten]]
+  * [[gitignore|2 - Dateien ignorieren (.gitignore)]]
+  * [[svnimport|3 - Subversion-Repositories importieren]]
+  * [[bisect|4 - Bugs schnell finden mit git-bisect]]
+  * [[patches|5 - Patches per Mail verschicken]]
+
+
+===== Befehle =====
+
+Den Inhalt eines Branches in ein Archiv exportieren:
+
+<code>$git archive -o $FILE_NAME.zip $BRANCH</code>
+
+===== Links =====
+[[http://rogerdudler.github.com/git-guide/|git - the simple guide]]
+
