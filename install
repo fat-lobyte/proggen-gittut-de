@@ -1,0 +1,71 @@
+====== Installation und konfiguration von Git ======
+
+In diesem Kapitel wird die Installation und die ersten Konfigurationschritte
+beschrieben. Wer Git bereits installiert hat, der sollte sich zumindest die
+[[#empfohlene_startkonfiguration|konfiguration]] ansehen.
+
+
+===== Installation unter Linux und Unix =====
+
+Bei den meisten Linux und Unixdistributionen ist Git bereits in den jeweiligen
+Paketquellen vorhanden. Das bedeutet, dass ihr es mit einem einfachen Befehl
+installieren könnt.
+
+Sollte das tatsächlich nicht der Fall sein, oder seid ihr mit der Version der
+Pakete unzufrieden, könnt ihr Git wie [[#aus_den_quellen|unten]] beschrieben auch aus
+den Quellen kompilieren und installieren.
+
+Dies ist eine Liste mit den verschiedenen Befehlen, die ihr ausführen müsst um
+Git zu installieren:
+
+  * Ubuntu & Debian <code>$ sudo apt-get install git git-doc</code>
+
+
+  * Fedora <code># yum install git</code>
+
+
+  * openSUSE <code># zypper install git-core git-doc</code>
+
+
+  * Arch Linux <code># pacman -S git</code>
+
+
+  * FreeBSD <code># cd /usr/ports/devel/git
+# make install</code>
+  
+===== Installation unter Mac OS X =====
+
+===== Installation unter Windows =====
+
+===== Aus den Quellen =====
+
+Git kann selbstverständlich auch aus dem Quellcode kompiliert werden. Ladet euch
+den aktuellen Taarball von https://github.com/git/git/tags herunter.
+
+Entpackt es mit dem Befehl
+<code>tar -xzf git-git-v*.tar.gz</code>
+
+Wechselt in das Verzeichnis des Qellcodes und kompiliert und installiet das
+Programm:
+<code>cd git-git-*
+make
+make install</code>
+
+
+Für die Konfiguration der Installation seht bitte selbst in der INSTALL-Datei
+des Quellcodeverzeichnisses nach.
+
+Zum Bauen werden folgende Komponenten benötigt:
+
+  * zlib
+  * openssl
+  * Perl
+  * libcurl
+  * expat
+  * gettext
+
+Bitte informiert euch im Paketmanager über die Installation dieser
+Abhängigkeiten.
+
+===== Empfohlene Startkonfiguration =====
+
