@@ -15,8 +15,14 @@ Sollte das tatsächlich nicht der Fall sein, oder seid ihr mit der Version der
 Pakete unzufrieden, könnt ihr Git wie [[#aus_den_quellen|unten]] beschrieben auch aus
 den Quellen kompilieren und installieren.
 
-Dies ist eine Liste mit den verschiedenen Befehlen, die ihr ausführen müsst um
-Git zu installieren:
+Die Dokumentation von Git ist ausgezeichnet und besteht aus manpages,
+GNU-info-seiten und HTML-Seiten. Ich empfehle jedem der sich etwas genauer mit den
+Git-Befehlen befassen will, sich die Anleitungen der einzelnen Befehle mit
+'''git help <Befehl>''' anzusehen. Deswegen wird bei den unten angeführten
+Befehlen zur Installation das Paket für die Dokumentation ebenfalls aufgelistet.
+
+
+Dies ist eine Liste mit den Befehlen, die ihr auf der jeweiligen Distribution ausführen müsst um Git zu installieren:
 
   * Ubuntu & Debian <code>$ sudo apt-get install git git-doc</code>
 
@@ -40,7 +46,7 @@ Git zu installieren:
 ===== Aus den Quellen =====
 
 Git kann selbstverständlich auch aus dem Quellcode kompiliert werden. Ladet euch
-den aktuellen Taarball von https://github.com/git/git/tags herunter.
+den aktuellen Tarball von https://github.com/git/git/tags herunter.
 
 Entpackt es mit dem Befehl
 <code>tar -xzf git-git-v*.tar.gz</code>
@@ -68,4 +74,75 @@ Bitte informiert euch im Paketmanager über die Installation dieser
 Abhängigkeiten.
 
 ===== Empfohlene Startkonfiguration =====
+
+=== Vorstellung ===
+
+Ganz zu Beginn sollte man sich bei Git vorstellen, und zwar mit dem Namen und
+der E-Mail-Adresse. Diese Informationen werden in jedem Commit
+(siehe [[makehis|später]]) gespeichert den ihr tätigt
+((Achtung, wenn ihr eure Änderungen auf einen [[remote|entfernten Server]]
+hochlädt, kann jeder der Zugriff auf diesen Server hat eure E-Mail-Adresse und
+Namen lesen.)).
+
+Gebt dazu folgendes in die Konsole ein (und ersetzt den Namen und die
+E-Mail-Adresse mit der eurigen):
+
+<code>git config --global user.name "Alexander Korsunsky"
+git config --global user.email 'fat-lobyte@proggen.org'</code>
+
+Wird ''<nowiki>--</nowiki>global'' angegeben, dann wird der jeweilige Konfigurationsschlüssel
+in ~/.gitconfig gespeichert. Wird dieser Parameter ausgelassen, kommt er in die
+Konfigurationsdatei des Git-repositories, indem ihr euch befindet
+(./.git/config, siehe [[dirstruct|später]]).
+
+=== Farben ===
+
+Des weiteren ist es sehr empfohlen Farben für die Ausgaben von Git
+einzuschalten, denn das hilft euch sehr beim Lesen der verschiedenen Ausgaben
+und verschafft euch auf einen Blick eine Übersicht über die Ausgabe:
+
+<code>git config --global color.ui always</code>
+
+=== Editor ===
+
+Außerdem braucht ihr noch einen Editor für die Benutzung. Das kann eigentlich
+jeder Editor sein, dem man eine Datei als Parameter übergeben kann die er dann
+öffnet.
+
+Für Konsolenfreaks ist das natürlich vi, vim, emacs, ed, nano oder dergleichen.
+Insbesondere vim und emacs sind zu empfehlen, da diese Syntaxhighlighting für
+die meisten Interaktionen mit Git bereitstellen.
+
+Den Editor könnt über die Umgebungsvariable "EDITOR" angeben, diese muss
+natürlich in jeder Shell, in der ihr Git verwenden wollt gesetzt sein 
+(für Bash empfiehlt es sich ''export EDITOR=vim'' in ~/.bashrc einzutragen).
+
+Alternativ könnt ihr auch eine Option in der Git-Konfiguration setzen:
+<code>git config --global core.editor vim</code>
+
+=== Anzeige der Hilfe ===
+
+Wie gesagt solltet ihr euch der Git-Hilfe anfreunden. Die Option
+'''help.format''' bestimmt, wie die Hilfe angezeigt wird, wenn ihr
+'''git help <Befehl>''' angibt.
+
+Die möglichen Werte sind:
+
+  * man - Zeigt Hilfeseiten als manpage mit dem dazugehörigen Pager an
+  * info - Zeigt Hilfe als GNU-info-Seite an
+  * web - Zeigt Hilfeseiten im Webbrowser an
+
+Auf Unixartigen Systemen ist "man" standardmäßig gesetzt, auf Windows ist es
+"web".
+
+<code>git config --global help.format man</code>
+
+Solltet ihr "web" wählen und es Probleme gibt oder der falsche Browser
+gestartet werden, müssen die Optionen help.browser, web.browser oder
+<browser.<tool>.path gesetzt werden.
+Bitte informiert euch mit '''git help help''', das auch
+[[http://www.kernel.org/pub/software/scm/git/docs/git-help.html|hier]] zu finden
+ist.
+
+=== Optionen für Windows ===
 
