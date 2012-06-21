@@ -43,6 +43,40 @@ Dies ist eine Liste mit den Befehlen, die ihr auf der jeweiligen Distribution au
 
 ===== Installation unter Windows =====
 
+==== msysGit ====
+
+Um Git auf Windows zu benutzen, ist das Paket "msysGit" empfohlen. Dieses könnt
+ihr von folgender Webseite herunterladen: http://git-scm.com/download/win
+
+Startet die Installation in gewohnter Weise durch einen Doppelklick auf den
+Installer, und klickt auf "Next".
+
+Ihr werdet gefragt, wie "Git" in euer Environment integriert werden soll (wie
+die Programme in die PATH-Variable kommen sollen). Lest euch die vorhandenen
+Optionen mit ihren Beschreibungen durch, aber ich empfehle hier die erste
+("Use Git Bash onlly") auszuwählen.
+
+Außerdem werdet ihr gefragt, wie mit den Zeilenenden verfahren werden soll.
+Diese Frage betrifft die Option "core.autocrlf"
+(siehe [[#Optionen für Windows|unten]]). Ich empfehle hier ebenfalls die erste
+Option auszuwählen.
+
+Danach könnt ihr mit der Installation fortfahren.
+
+
+Um anschließend eine Shell zu öffnen, in der ihr Git verwenden könnt benützt
+entweder den Desktop-Verknüpfung, startet die Shell mit Start->Programme->Alle Programme->Git->Git Bash oder startet den Explorer und rechtsklickt in einem 
+Ordner auf eine Weiße Fläche und wählt dann "Git Bash" aus dem Kontextmenü.
+
+==== GitHub ====
+
+Habt ihr vor, euer Projekt auf GitHub zu hosten, könnt ihr eine auf GitHub
+spezialisierte GUI verwenden, die ihr euch hier herunterladen könnt: http://windows.github.com/
+
+Dieses Tutorial wird hauptsächlich die Kommandozeile verwenden, also solltet ihr
+die Kommandozeile starten indem ihr entweder auf die Desktop-Verknüpfung klickt,
+oder aus dem Startmenü Start->Alle Programme->Github, Inc->Git Shell auswählt.
+
 ===== Aus den Quellen =====
 
 Git kann selbstverständlich auch aus dem Quellcode kompiliert werden. Ladet euch
@@ -75,7 +109,7 @@ Abhängigkeiten.
 
 ===== Empfohlene Startkonfiguration =====
 
-=== Vorstellung ===
+==== Vorstellung ====
 
 Ganz zu Beginn sollte man sich bei Git vorstellen, und zwar mit dem Namen und
 der E-Mail-Adresse. Diese Informationen werden in jedem Commit
@@ -95,7 +129,7 @@ in ~/.gitconfig gespeichert. Wird dieser Parameter ausgelassen, kommt er in die
 Konfigurationsdatei des Git-repositories, indem ihr euch befindet
 (./.git/config, siehe [[dirstruct|später]]).
 
-=== Farben ===
+==== Farben ====
 
 Des weiteren ist es sehr empfohlen Farben für die Ausgaben von Git
 einzuschalten, denn das hilft euch sehr beim Lesen der verschiedenen Ausgaben
@@ -103,7 +137,7 @@ und verschafft euch auf einen Blick eine Übersicht über die Ausgabe:
 
 <code>git config --global color.ui always</code>
 
-=== Editor ===
+==== Editor ====
 
 Außerdem braucht ihr noch einen Editor für die Benutzung. Das kann eigentlich
 jeder Editor sein, dem man eine Datei als Parameter übergeben kann die er dann
@@ -120,7 +154,7 @@ natürlich in jeder Shell, in der ihr Git verwenden wollt gesetzt sein
 Alternativ könnt ihr auch eine Option in der Git-Konfiguration setzen:
 <code>git config --global core.editor vim</code>
 
-=== Anzeige der Hilfe ===
+==== Anzeige der Hilfe ====
 
 Wie gesagt solltet ihr euch der Git-Hilfe anfreunden. Die Option
 '''help.format''' bestimmt, wie die Hilfe angezeigt wird, wenn ihr
@@ -144,5 +178,65 @@ Bitte informiert euch mit '''git help help''', das auch
 [[http://www.kernel.org/pub/software/scm/git/docs/git-help.html|hier]] zu finden
 ist.
 
-=== Optionen für Windows ===
+==== Optionen für Windows ====
 
+=== Zeilenenden ===
+
+Die meisten Editoren speichern auf Linux Dateien mit einem einzigen Zeichen
+"Line Feed"(lf) als Zeilenende. Auf Windows allerdings werden Dateien meist mit
+einem "Carriage Return" und einem "Line Feed" (crlf) als Zeilenende gespeichert.
+Den meisten moderneren Editoren (z.B. NotePad++ oder der Editor von Visual
+Studio) ist's ziemlich Schnuppe, wie die Zeilenenden kodiert sind, aber ältere
+Editoren (wie z.B. notepad.exe) werden Probleme damit haben.
+
+Dies ist zwar genaugenommen kein Git-Problem, dennoch bietet Git hier eine
+Lösung an: Git kann je nach Einstellung des Schlüssels "core.autocrlf" beim
+auschecken von Dateien und beim eintragen von Änderungen die Zeilenenden
+konvertieren.
+
+Dies sind die möglichen Werte:
+
+  * true: Beim ausgecheck nach CRLF konvertiert, und beim Eintragen nach LF konvertiert
+  * input: Dateien werden so wie sie sind ausgecheckt, und beim Eintragen nach LF konvertiert
+  * Nicht gesetzt: Dateien werden so wie sie sind ausgecheckt und eingecheckt 
+
+Dies könnt ihr so setzen:
+<code>git config --global core.autocrlf true</code>
+
+Wollt ihr die Option entfernen, könnt ihr das so machen:
+<code>git config --global --unset core.autocrlf</code>
+  
+Habt ihr Git über als msysGit-Paket installiert, wurdet ihr bereits bei der
+Installation nach dieser Option gefragt.
+
+=== Dateimodi ===
+
+Da es unter den Dateisystemen von Windows keine "Dateimodi" (als Berechtigungen)
+gibt, werden diese von Git als einen vordefinierten Wert angenommen. Ist dieser
+nicht der gleiche wie der Wert in der Datenbank, werden die Dateien immer als
+geändert angezeigt, auch wenn ihr die Dateien nicht angefasst habt. Deswegen
+empfiehlt es sich, auf einem NTFS- oder FAT-Dateisystem stets die Option
+"core.fileMode" auf "false" zu setzen:
+
+<code>git config --global core.filemode false</code>
+
+=== Symbolische Links ===
+
+Sollte euer Projekt symbolische Verknüpfung enthalten, solltet ihr unter Windows die
+Option "core.symlinks" auf false setzen. Dadurch wird nicht einfach zweimal die
+gleiche Datei ausgecheckt, sondern der Symbolische Link wird mit einer kleinen
+"Referenzdatei", die den Pfad des Ziels der Verknüpfung enthält, ersetzt.
+
+<code>git config --global core.symlinks false</code>
+
+Bitte beachtet, dass unter Windows symbolische Links NICHT angelegt und von Git
+erfasst werden können! Nur bereits vorhandene Verknüpfungen bleiben mit dieser
+Option erhalten.
+
+
+[[start|< Zurück]] | [[start|Index]] | [[makehis|Weiter >]]
+
+------------------------
+
+Hat dir diese Antwort geholfen? Wenn nicht oder wenn du Verbesserungs- bzw.
+Erweiterungsvorschläge hast, dann schreib das bitte einfach auf die FIXME Diskussionsseite.
