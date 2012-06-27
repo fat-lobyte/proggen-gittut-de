@@ -5,12 +5,13 @@ Diese Seite zeigt eine Übersicht über die Kapitel des Git-Tutorials. Wer noch 
 ===== Kapitel I - Das Porzellan =====
 
   * [[vcs:start|0 - Wozu ein Versionsverwaltungssystem?]]
-  * [[install|1 - Git installieren]]
-  * [[makehis|2 - Geschichte schreiben (add, commit)]]
-  * [[readhis|3 - Geschichte lesen (log, reset, checkout)]]
-  * [[branches|4 - Verzweigungen erstellen und zusammenlegen (branch, merge, checkout)]]
-  * [[remote|5 - Zusammenarbeit (remote, push, fetch)]]
-  * [[rewritehis|6 - Geschichte umschreiben (rebase)]]
+  * [[intro|1 - Einführung]]
+  * [[install|2 - Git installieren]]
+  * [[makehis|3 - Geschichte schreiben (add, commit)]]
+  * [[readhis|4 - Geschichte lesen (log, reset, checkout)]]
+  * [[branches|5 - Verzweigungen erstellen und zusammenlegen (branch, merge, checkout)]]
+  * [[remote|6 - Zusammenarbeit (remote, push, fetch)]]
+  * [[rewritehis|7 - Geschichte umschreiben (rebase)]]
   
 ===== Kapitel II - Die Leitungen =====
 
@@ -29,5 +30,7 @@ Diese Seite zeigt eine Übersicht über die Kapitel des Git-Tutorials. Wer noch 
 
 
 ===== Links =====
+
+[[http://git-scm.com/book - Git Book]]
 [[http://rogerdudler.github.com/git-guide/|git - the simple guide]]
 
