@@ -1,0 +1,18 @@
+﻿====== Glossar ======
+
+== Arbeitskopie ==
+Ein Verzeichnis, das von einem Versionsverwaltungssystem (z.B. Git) verfolgt
+wird und an dem man Arbeiten kann.
+
+== Commit ==
+Ein Eintrag in die Geschichte des Projektes, gespeichert in einem
+[[#Repository]].
+Siehe [[makehis|Geschichte schreiben]].
+
+== Repository ==
+Eine Datenbank, Datenstruktur oder Verzeichnis das die gesamte Geschichte des
+Projektes enthält.
+Bei Git ist es das ''.git''-Verzeichnis in jeder Arbeitskopie.
+
+== Working Copy ==
+siehe [[#Arbeitskopie]]
