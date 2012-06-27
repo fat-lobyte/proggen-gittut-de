@@ -1,0 +1,8 @@
+== Leeres Repository anlegen ==
+
+<code>git init</code>
+
+== Den Inhalt eines Branches in ein Archiv exportieren ==
+
+<code>$git archive -o $FILE_NAME.zip $BRANCH</code>
+

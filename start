@@ -8,7 +8,7 @@ Diese Seite zeigt eine Übersicht über die Kapitel des Git-Tutorials. Wer noch 
   * [[install|1 - Git installieren]]
   * [[makehis|2 - Geschichte schreiben (add, commit)]]
   * [[readhis|3 - Geschichte lesen (log, reset, checkout)]]
-  * [[branching|4 - Verzweigungen erstellen und zusammenlegen (branch, merge, checkout)]]
+  * [[branches|4 - Verzweigungen erstellen und zusammenlegen (branch, merge, checkout)]]
   * [[remote|5 - Zusammenarbeit (remote, push, fetch)]]
   * [[rewritehis|6 - Geschichte umschreiben (rebase)]]
   
@@ -25,13 +25,8 @@ Diese Seite zeigt eine Übersicht über die Kapitel des Git-Tutorials. Wer noch 
   * [[svnimport|3 - Subversion-Repositories importieren]]
   * [[bisect|4 - Bugs schnell finden mit git-bisect]]
   * [[patches|5 - Patches per Mail verschicken]]
+  * [[ref|6 - Befehlsrefenz]]
 
-
-===== Befehle =====
-
-Den Inhalt eines Branches in ein Archiv exportieren:
-
-<code>$git archive -o $FILE_NAME.zip $BRANCH</code>
 
 ===== Links =====
 [[http://rogerdudler.github.com/git-guide/|git - the simple guide]]
