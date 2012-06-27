@@ -1,0 +1,149 @@
+====== Geschichte schreiben (add, commit) ======
+
+Nachdem wir Git eingerichtet haben, und die nötigsten Optionen gesetzt sind,
+wollen wir nun versuchen die Grundlagen der Git-Nutzung mit einem
+Beispielprojekt zu lernen. 
+
+
+Zunächst wollen wir ein paar Grundbegriffe über die Benutzung klären.
+
+Habt ihr ein Projekt, liegt es höchstwahrscheinlich als Verzeichnis vor, indem
+einige Dateien und unterverzeichnisse liegen. Wird dieses Verzeichnis mit einem
+Versionsverwaltungssystem verwaltet, nennt man es **"Arbeitskopie"**.
+
+
+Eine Arbeitskopie ist - wie der Name schon sagt - eine Kopie, mit der ihr 
+Arbeiten könnt. Dort könnt ihr Dateien ändern, hinzufügen oder löschen, 
+ihr könnt die Quellcodedateien zum Kompilieren verwenden oder auch sonst alles
+machen.
+
+In einem verteilten Versionsverwaltungssystem wie Git ((und Mercurial und Bazaar)) es ist ist, besitzt jede Arbeitskopie auch ein sogenanntes
+**"Repository"**. Dies ist bei zentralen Versionsverwaltungssystemen, wie CVS und
+Subversion nicht so: das Repository liegt auf einem entfernten Server.
+
+Repository ist Englisch für Lagerstätte oder Aufbewahrungsort, und das wird
+dort auch gemacht:
+alle Änderungen und Dateien die ihr tätigt werden dort gespeichert und
+aufbewahrt. In diesem Tutorial werde ich dafür das englische Wort "Repository" verwenden.
+
+
+
+====== Repository Anlegen ======
+
+Um also unser Projekt zu verfolgen, müssen wir zuerst ein Repository anlegen.
+
+Dazu legen wir zuerst ein Verzeichnis an, und wechseln dort hinein
+<code>mkdir helloworld
+cd helloworld
+</code>
+
+Anschließend erstellen - oder besser gesagt initiieren - wir ein
+Git-Repository:
+<code>git init</code>
+
+Und schon ist es erstellt! Überprüfen könnt ihr das, indem ihr mit ''ls -a''
+alle Unterverzeichnisse anzeigen lasst. Das Repository ist das
+''.git''-Unterverzeichnis.
+
+
+====== Neue Dateien hinzufügen ======
+
+Jetzt wollen wir mit der Arbeit beginnen. Dazu werden wir das typische
+"Hello World"- Programm schreiben, und es anschließend eintragen. Ihr könnt die
+Datei entweder mit einem Editor erstellen, oder ihr kopiert einfach das Folgende
+in eure Konsole:
+<code>cat > helloworld.c << EOF
+#include <stdio.h>
+
+int main()
+{
+    printf ("Hello World!\n");
+
+    return 0;
+}
+
+EOF
+
+</code>
+
+
+Wollt ihr diese Datei nun eintragen, müsst ihr Git erstmal bekannt geben, dass
+es eure Datei verfolgen soll. Dies geschieht mit dem Befehl **add**:
+<code>git add helloworld.c</code>
+
+Anschließend müssen wir die Änderungen **commiten** (das bedeutet Eintragen).
+Dies geschieht mit dem **commit**-Befehl:
+<code>git commit</code>
+
+
+Dies startet euren [[install#Editor|eingestellten]] Editor, mit dem ihr den
+Commit beschreiben müsst: schreibt eine Art kleinen Logbucheintrag über eure
+Änderungen. Diese Nachricht wird gespeichert, und soll als erklärung der
+Änderung dienen, damit man auch in Zukunft nachvollziehen kann was ihr warum
+gemacht habt. Haltet euch kurz, bleibt präzise und beschreibt mit so wenig
+Worten wie möglich was ihr wozu getan habt.
+
+Das Format ist dabei zwar völlig frei Wählbar, es empfiehlt sich allerdings ein
+bestimmtes Format einzuhalten, damit ihr die Änderungen bequem lesen könnt:
+  * Die erste Zeile beschreibt in aller Kürze die Änderung, und darf nicht länger
+als  50 Zeichen sein.
+  * Die zweite Zeile bleibt leer
+  * Die darauffolgenden Zeilen könnt ihr frei zur Beschreibung verwenden.
+
+
+Für den ersten Commit hat es sich eingebürgert einfach nur "Initial commit" als
+Nachricht zu verwenden.
+
+Habt ihr eure Nachricht eingetragen, speichert die offene Datei und schließt den
+Editor. 
+
+Als Antwort bekommt ihr nun, welcher [[branches|Zweig]] aktualisiert wurde, und
+eine kleine Zusammenfassung der Änderungen. Bei mir sieht das Beispielsweise so aus:
+<code>[master (Basis-Version) 0b78177] Initial commit
+ 1 Datei geändert, 9 Zeilen hinzugefügt(+)
+ create mode 100644 helloworld.c
+</code>
+
+Gratulation! Damit habt ihr euren ersten Commit getätigt!
+
+
+====== Dateien ändern ====== 
+
+
+====== Dateien löschen ======
+
+
+====== Abkürzungen ======
+
+Ist die Commit-Nachricht kurz, könnt ihr sie auch direkt als 
+Kommandozeilenparameter angeben. Dazu überreicht den Parameter ''<nowiki>--</nowiki>message'' oder ''-m'' und danach die Nachricht in Anführungszeichen:
+
+<code>git commit -m "Initial commit"</code>
+
+Damit spart ihr euch, dass der Editor aufgerufen wird.
+
+
+
+Außerdem könnt alle Änderungen an jeder Datei, die Git bereits kennt eintragen
+lassen und damit das manuelle eintragen in den Index umgehen. Dies geschieht mit
+dem Schalter ''-a''. Ihr könnt ihn auch zusammen mit ''-m'' verwenden:
+<code>git commit -am "Einiges geändert"</code>
+
+Dazu ein kleiner Tip für euch: FINGER WEG VON DIESER OPTION! Obwohl das quasi
+das "Standardverhalten" von SVN wäre, würde ich euch Raten das nicht zu tun.
+Es ist (mir selbst, aber auch anderen) schon oft genug passiert, dass deswegen
+Dateien fehlen, zuviel sind, oder die Falschen Änderungen eingetragen wurden.
+Tut euch selbst einen Gefallen, und lasst es.
+
+====== Dateien ignorieren - .gitignore ======
+
+====== Stückweises hinzufügen zum Index ====== 
+
+
+[[install|< Zurück]] | [[start|Index]] | [[readhis|Weiter >]]
+
+------------------------
+
+Hat dir diese Antwort geholfen? Wenn nicht oder wenn du Verbesserungs- bzw.
+Erweiterungsvorschläge hast, dann schreib das bitte einfach auf die FIXME Diskussionsseite.
+
