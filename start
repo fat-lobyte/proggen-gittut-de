@@ -1,6 +1,8 @@
 ====== Übersicht des Git- Tutorials ======
 
-Diese Seite zeigt eine Übersicht über die Kapitel des Git-Tutorials. Wer noch nicht weiß was eine Versionsverwaltung ist sollte sich zuerst einmal die [[vcs:start|Einführung]] durchlesen.
+Diese Seite zeigt eine Übersicht über die Kapitel des Git-Tutorials.
+Wer noch nicht weiß was eine Versionsverwaltung ist sollte sich zuerst einmal 
+die [[vcs:start|Einführung]] durchlesen.
 
 ===== Kapitel I - Das Porzellan =====
 
@@ -26,11 +28,9 @@ Diese Seite zeigt eine Übersicht über die Kapitel des Git-Tutorials. Wer noch 
   * [[bisect|3 - Bugs schnell finden mit git-bisect]]
   * [[patches|4 - Patches per Mail verschicken]]
   * [[submodule|5 - Unterprojekte mit git-submodule]]
-  * [[ref|6 - Befehlsrefenz]]
+  
+===== Anhang =====
 
-
-===== Links =====
-
-[[http://git-scm.com/book - Git Book]]
-[[http://rogerdudler.github.com/git-guide/|git - the simple guide]]
-
+  * [[ref|A - Befehlsrefenz]]
+  * [[glossary|B - Glossar]]
+  * [[links|C - Links]]
