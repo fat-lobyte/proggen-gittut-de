@@ -38,6 +38,8 @@ Dies ist eine Liste mit den Befehlen, die ihr auf der jeweiligen Distribution au
 
   * FreeBSD <code># cd /usr/ports/devel/git
 # make install</code>
+  oder
+   <code># pkg_add -r git</code>
   
 ===== Installation unter Mac OS X =====
 
