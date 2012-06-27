@@ -22,10 +22,10 @@ Diese Seite zeigt eine Übersicht über die Kapitel des Git-Tutorials. Wer noch 
 ===== Kapitel III - Die Tricks =====
 
   * [[server|1 - Git Repositories hosten]]
-  * [[gitignore|2 - Dateien ignorieren (.gitignore)]]
-  * [[svnimport|3 - Subversion-Repositories importieren]]
-  * [[bisect|4 - Bugs schnell finden mit git-bisect]]
-  * [[patches|5 - Patches per Mail verschicken]]
+  * [[svnimport|2 - Subversion-Repositories importieren]]
+  * [[bisect|3 - Bugs schnell finden mit git-bisect]]
+  * [[patches|4 - Patches per Mail verschicken]]
+  * [[submodule|5 - Unterprojekte mit git-submodule]]
   * [[ref|6 - Befehlsrefenz]]
 
 
