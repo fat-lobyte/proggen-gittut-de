@@ -1,6 +1,43 @@
+﻿====== Befehlsreferenz ======
+
+Hier findet ihr eine Zusammenstellung aus Git-Befehlen und ihren Parametern, die
+euch nützlich sein könnten. Benutzt diese Referenz nur als Erinnerung, nicht um
+zu lernen wie ein Befehl funktioniert.
+
+Dort wo es möglich ist, wird ein Verweis zur jeweiligen Stelle des Tutorials
+angegeben.
+
 == Leeres Repository anlegen ==
 
+Siehe [[makehis|Geschichte schreiben]]
+
 <code>git init</code>
+
+
+Siehe [[server|Git Repositories hosten]]
+
+"Rohes" Repository (ohne Arbeitskopie) anlegen.
+<code>git init --bare</code>
+
+"Rohes" Repository für den Gebrauch durch mehrere Nutzer die einer Gruppe $GRUPPE
+angehören anlegen
+<code>git init --bare --shared=group
+chgrp -R $GRUPPE .
+</code>
+
+== Änderungen commiten ==
+
+Siehe [[makehis|Geschichte schreiben]]
+
+  * Änderungen in den Index stellen:
+    <code>git add datei1 datei2 datei3</code>
+  * Wenn Änderungen bereits im Index sind:
+    <code>git commit</code>
+  * Alle Änderungen an bekannten Dateien in den Index stellen und commiten
+    <code>git commit -a</code>
+  * Commit-Nachricht als Kommandozeilenparameter Übergeben
+    <code>git commit -m "Nachricht"</code>
+
 
 == Den Inhalt eines Branches in ein Archiv exportieren ==
 
