@@ -1,6 +1,6 @@
 ====== Geschichte schreiben (add, commit) ======
 
-Nachdem wir Git eingerichtet haben, und die nötigsten Optionen gesetzt sind,
+Nachdem wir Git eingerichtet haben und die nötigsten Optionen gesetzt sind,
 wollen wir nun versuchen die Grundlagen der Git-Nutzung mit einem
 Beispielprojekt zu lernen. 
 
@@ -32,12 +32,12 @@ Um also unser Projekt zu verfolgen, müssen wir zuerst ein Repository anlegen.
 Dazu legen wir ein Verzeichnis an, und wechseln dort hinein
 <code>mkdir helloworld
 cd helloworld
-</code> \\ \\
+</code> \\
 
 Anschließend erstellen - oder besser gesagt initiieren - wir ein
-Git-Repository: <code>git init</code> \\ \\
+Git-Repository: <code>git init</code> \\
 
-Und schon ist es erstellt! Überprüfen könnt ihr das, indem ihr mit ''ls -a''
+Und schon ist es erstellt! Überprüfen könnt ihr das, indem ihr mit '''ls -a'''
 alle Unterverzeichnisse anzeigen lasst. Das Repository ist das
 ''.git''-Unterverzeichnis.
 
@@ -60,14 +60,14 @@ int main()
 
 EOF
 
-</code> \\ \\
+</code> \\
 
 
 Wollt ihr diese Datei nun eintragen, müsst ihr Git erstmal bekannt geben, dass
-es eure Datei verfolgen soll. Dies geschieht mit dem Befehl **add**: <code>git add helloworld.c</code> \\ \\
+es eure Datei verfolgen soll. Dies geschieht mit dem Befehl **add**: <code>git add helloworld.c</code> \\
 
 Anschließend müssen wir die Änderungen **commiten** (das bedeutet Eintragen).
-Dies geschieht mit dem **commit**-Befehl: <code>git commit</code> \\ \\
+Dies geschieht mit dem **commit**-Befehl: <code>git commit</code> \\
 
 
 Dies startet euren [[install#Editor|eingestellten]] Editor, mit dem ihr den
@@ -88,14 +88,12 @@ Für den ersten Commit hat es sich eingebürgert einfach nur "Initial commit" al
 Nachricht zu verwenden.
 
 Habt ihr eure Nachricht eingetragen, speichert die offene Datei und schließt den
-Editor. 
-
-Als Antwort bekommt ihr nun, welcher [[branches|Zweig]] aktualisiert wurde, und
+Editor. Als Antwort bekommt ihr nun, welcher [[branches|Zweig]] aktualisiert wurde, und
 eine kleine Zusammenfassung der Änderungen. Bei mir sieht das Beispielsweise so aus:
 <code>[master (Basis-Version) 0b78177] Initial commit
  1 Datei geändert, 9 Zeilen hinzugefügt(+)
  create mode 100644 helloworld.c
-</code> \\ \\
+</code> \\
 
 Gratulation! Damit habt ihr euren ersten Commit getätigt!
 
@@ -114,7 +112,7 @@ clean:
 <code bash>
 git add Makefile
 git commit -m "Makefile hinzugefügt"
-</code> \\ \\
+</code> \\
 
 ===== Verzeichnisse hinzufügen =====
 
@@ -142,7 +140,7 @@ einzutragen.
 
 Vorher möchte ich allerdings eure Aufmerksamkeit auf einen neuen Befehl lenken:
 der **status**-Befehl:
-<code>git status</code> \\ \\
+<code>git status</code> \\
 
 Dieser Befehl gibt euch Auskunft über den derzeitigen Status eurer Arbeitskopie:
 auf welchem [[branches|Zweig]] ihr euch befindet, welche Dateien geändert sind,
@@ -158,10 +156,10 @@ Erfahrung bekommt ihr aber ein Gefühl dafür.
 Gebt nun diesen Befehl ein, und seht euch die Ausgabe an. Bei mir sieht das so
 aus:
 <code># Auf Zweig master
-nichts zum Eintragen (Arbeitsverzeichnis sauber)</code> \\ \\
+nichts zum Eintragen (Arbeitsverzeichnis sauber)</code> \\
 
 Klar. Wir befinden uns auf dem Zweig "master" (unser "Haupt"-Zweig), und wir
-haben seit unserem Letzten Commit nichts geöndert (deswegen ist das 
+haben seit unserem Letzten Commit nichts geändert (deswegen ist das 
 Arbeitsverzeichnis "sauber") und auch nichts mit **add** hinzugefügt (deswegen
 haben wir "nichts zum Eintragen").
 
@@ -171,7 +169,7 @@ normalerweise macht. Sagen wir, wir wollen nun nicht mehr die Welt grüßen,
 sondern nur proggen.org. Ändert also die 5. Zeile in der Datei ''helloworld.c''
 und speichert die Datei. Wenn ihr zu faul seid, kopiert einfach folgendes 
 Zauberkommando in eure Kommandozeile:
-<code>sed -i -e 's/World!/proggen.org!/g' helloworld.c</code> \\ \\
+<code>sed -i -e 's/World!/proggen.org!/g' helloworld.c</code> \\
 
 
 So. Nun rufen wir noch einmal ''git status'' auf. Die Ausgabe sieht bei mir so
@@ -185,7 +183,7 @@ aus:
 #	geändert:   helloworld.c
 #
 keine Änderungen zum Eintragen hinzugefügt (benutze "git add" und/oder "git commit -a")
-</code> \\ \\
+</code> \\
 
 Wir befinden uns immer noch auf dem Zweig "master", haben aber jetzt Änderungen
 in unserem Arbeitsverzeichnis. Habt ihr [[install#Farben|color.ui]]
@@ -209,10 +207,10 @@ werdet diese Funktionsweise aber mit der Zeit zu schätzen lernen!
 
 
 Nun gut, jetzt tragen wir unsere Änderungen ein:
-<code>git add helloworld.c</code> \\ \\
+<code>git add helloworld.c</code> \\
 
 Sehen wir uns den **status** an:
-<code>git status</code> \\ \\
+<code>git status</code> \\
 
 Die Ausgabe ist:
 <code># Auf Zweig master
@@ -220,11 +218,11 @@ Die Ausgabe ist:
 #   (benutze "git reset HEAD <Datei>..." zum Herausnehmen aus der Bereitstellung)
 #
 #	geändert:   helloworld.c
-#</code> \\ \\
+#</code> \\
 
 Wie ihr nun seht, sind die Änderungen die wir gemacht haben
 "zum Eintragen bereitgestellt" - die Datei ''helloworld.c'' ist nun Grün.
-Man sagt, die Änderungen befinden sich "im Index". Der "Index" ist der Zustand
+Man sagt, die Änderungen befinden sich "im **Index**". Der "Index" ist der Zustand
 der Arbeitskopie, den sie beim nächsten Commit haben soll.
 
 
@@ -244,11 +242,11 @@ helloworld: helloworld.c
 clean:
 $(RM) helloworld
 
-</code> \\ \\
+</code> \\
 
 
 Sehen wir uns den jetzigen **Status** an:
-<code>git status</code> \\ \\
+<code>git status</code> \\
 
 <code># Auf Zweig master
 # zum Eintragen bereitgestellte Änderungen:
@@ -294,7 +292,7 @@ Als Commit-Nachricht geben wir "Grüße nur proggen.org statt der Welt" ein.
 Überprüft ihr jetzt noch einmal den **Status**, sollte das Arbeitsverzeichnis
 wieder als "sauber" angezeigt werden.
 
-===== Dateien löschen =====
+===== Dateien löschen und Umbenennen =====
 
 
 ===== Abkürzungen =====
