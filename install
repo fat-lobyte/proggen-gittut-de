@@ -37,11 +37,11 @@ Dies ist eine Liste mit den Befehlen, die ihr auf der jeweiligen Distribution au
 
 
   * FreeBSD <code># cd /usr/ports/devel/git
-# make install</code>
-  oder
-   <code># pkg_add -r git</code>
+# make install</code>  oder <code># pkg_add -r git</code>
   
 ===== Installation unter Mac OS X =====
+
+FIXME
 
 ===== Installation unter Windows =====
 
@@ -124,7 +124,7 @@ Gebt dazu folgendes in die Konsole ein (und ersetzt den Namen und die
 E-Mail-Adresse mit der eurigen):
 
 <code>git config --global user.name "Alexander Korsunsky"
-git config --global user.email 'fat-lobyte@proggen.org'</code>
+git config --global user.email 'fat-lobyte@proggen.org'</code> \\
 
 Wird ''<nowiki>--</nowiki>global'' angegeben, dann wird der jeweilige Konfigurationsschlüssel
 in ~/.gitconfig gespeichert. Wird dieser Parameter ausgelassen, kommt er in die
@@ -151,7 +151,7 @@ die meisten Interaktionen mit Git bereitstellen.
 
 Den Editor könnt über die Umgebungsvariable "EDITOR" angeben, diese muss
 natürlich in jeder Shell, in der ihr Git verwenden wollt gesetzt sein 
-(für Bash empfiehlt es sich ''export EDITOR=vim'' in ~/.bashrc einzutragen).
+(für Bash empfiehlt es sich '''export EDITOR=vim''' in ''~/.bashrc''d einzutragen).
 
 Alternativ könnt ihr auch eine Option in der Git-Konfiguration setzen:
 <code>git config --global core.editor vim</code>
@@ -163,7 +163,6 @@ Wie gesagt solltet ihr euch der Git-Hilfe anfreunden. Die Option
 '''git help <Befehl>''' angibt.
 
 Die möglichen Werte sind:
-
   * man - Zeigt Hilfeseiten als manpage mit dem dazugehörigen Pager an
   * info - Zeigt Hilfe als GNU-info-Seite an
   * web - Zeigt Hilfeseiten im Webbrowser an
@@ -202,17 +201,14 @@ Dies sind die möglichen Werte:
   * input: Dateien werden so wie sie sind ausgecheckt, und beim Eintragen nach LF konvertiert
   * Nicht gesetzt: Dateien werden so wie sie sind ausgecheckt und eingecheckt 
 
-Dies könnt ihr so setzen:
-<code>git config --global core.autocrlf true</code>
+Dies könnt ihr so setzen: <code>git config --global core.autocrlf true</code> \\
 
-Wollt ihr die Option entfernen, könnt ihr das so machen:
-<code>git config --global --unset core.autocrlf</code>
+Wollt ihr die Option entfernen, könnt ihr das so machen: <code>git config --global --unset core.autocrlf</code> \\
   
 Habt ihr Git über als msysGit-Paket installiert, wurdet ihr bereits bei der
 Installation nach dieser Option gefragt.
 
 === Dateimodi ===
-
 Da es unter den Dateisystemen von Windows keine "Dateimodi" (als Berechtigungen)
 gibt, werden diese von Git als einen vordefinierten Wert angenommen. Ist dieser
 nicht der gleiche wie der Wert in der Datenbank, werden die Dateien immer als
@@ -223,7 +219,6 @@ empfiehlt es sich, auf einem NTFS- oder FAT-Dateisystem stets die Option
 <code>git config --global core.filemode false</code>
 
 === Symbolische Links ===
-
 Sollte euer Projekt symbolische Verknüpfung enthalten, solltet ihr unter Windows die
 Option "core.symlinks" auf false setzen. Dadurch wird nicht einfach zweimal die
 gleiche Datei ausgecheckt, sondern der Symbolische Link wird mit einer kleinen

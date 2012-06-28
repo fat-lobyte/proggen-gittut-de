@@ -7,25 +7,21 @@ zu lernen wie ein Befehl funktioniert.
 Dort wo es möglich ist, wird ein Verweis zur jeweiligen Stelle des Tutorials
 angegeben.
 
-== Leeres Repository anlegen ==
-
-Siehe [[makehis|Geschichte schreiben]]
+﻿==== Leeres Repository anlegen ﻿====
 
 <code>git init</code>
+Siehe [[makehis|Geschichte schreiben]]
 
 
-Siehe [[server|Git Repositories hosten]]
-
-"Rohes" Repository (ohne Arbeitskopie) anlegen.
-<code>git init --bare</code>
+"Rohes" Repository (ohne Arbeitskopie) anlegen: <code>git init --bare</code> \\
 
 "Rohes" Repository für den Gebrauch durch mehrere Nutzer die einer Gruppe $GRUPPE
-angehören anlegen
+angehören anlegen:
 <code>git init --bare --shared=group
 chgrp -R $GRUPPE .
-</code>
-
-== Änderungen commiten ==
+</code> \\
+Siehe [[server|Git Repositories hosten]]
+﻿==== Änderungen commiten ﻿====
 
 Siehe [[makehis|Geschichte schreiben]]
 
@@ -39,7 +35,7 @@ Siehe [[makehis|Geschichte schreiben]]
     <code>git commit -m "Nachricht"</code>
 
 
-== Änderungen betrachten ==
+==== Änderungen betrachten ====
 
 Änderungen ansehen, die beim nächsten Commit eingetragen werden: <code>git diff --cached</code> \\
 
@@ -49,7 +45,10 @@ Arbeitskopie anzeigen: <code>git diff</code> \\
 Änderungen, die seit dem letzten Commit geschehen sind
 anzeigen lassen: <code>git diff HEAD</code> \\
 
-== Den Inhalt eines Branches in ein Archiv exportieren ==
+==== Den Inhalt eines Branches in ein Archiv exportieren ====
 
-<code>$git archive -o $FILE_NAME.zip $BRANCH</code>
+<code>git archive -o $FILE_NAME.zip $BRANCH</code>
+
+
+<code>git archive --format=tar --prefix=$NAME $BRANCH | gzip - > $NAME.tar.gz</code>
 
