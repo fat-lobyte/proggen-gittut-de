@@ -9,10 +9,19 @@ Ein Eintrag in die Geschichte des Projektes, gespeichert in einem
 [[#Repository]].
 Siehe [[makehis|Geschichte schreiben]].
 
+== Eintrag ==
+Siehe [[#Commit]]
+
+== Index ==
+Der "Index" ist der Zustand der Arbeitskopie, den sie beim nächsten Commit haben
+soll. Englisch: "staging area" oder "index".
+
 == Repository ==
 Eine Datenbank, Datenstruktur oder Verzeichnis das die gesamte Geschichte des
 Projektes enthält.
 Bei Git ist es das ''.git''-Verzeichnis in jeder Arbeitskopie.
+
+== Staging area ==
 
 == Working Copy ==
 siehe [[#Arbeitskopie]]

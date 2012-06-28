@@ -4,18 +4,18 @@ Nachdem wir Git eingerichtet haben, und die nötigsten Optionen gesetzt sind,
 wollen wir nun versuchen die Grundlagen der Git-Nutzung mit einem
 Beispielprojekt zu lernen. 
 
+Dazu sollten wir zunächst ein paar Grundbegriffe über die Benutzung klären.
 
-Zunächst wollen wir ein paar Grundbegriffe über die Benutzung klären.
 
 Habt ihr ein Projekt, liegt es höchstwahrscheinlich als Verzeichnis vor, indem
 einige Dateien und unterverzeichnisse liegen. Wird dieses Verzeichnis mit einem
 Versionsverwaltungssystem verwaltet, nennt man es **"Arbeitskopie"**.
 
-
 Eine Arbeitskopie ist - wie der Name schon sagt - eine Kopie, mit der ihr 
 Arbeiten könnt. Dort könnt ihr Dateien ändern, hinzufügen oder löschen, 
 ihr könnt die Quellcodedateien zum Kompilieren verwenden oder auch sonst alles
 machen.
+
 
 In einem verteilten Versionsverwaltungssystem wie Git ((und Mercurial und Bazaar)) es ist ist, besitzt jede Arbeitskopie auch ein sogenanntes
 **"Repository"**. Dies ist bei zentralen Versionsverwaltungssystemen, wie CVS und
@@ -26,27 +26,23 @@ dort auch gemacht:
 alle Änderungen und Dateien die ihr tätigt werden dort gespeichert und
 aufbewahrt. In diesem Tutorial werde ich dafür das englische Wort "Repository" verwenden.
 
-
-
-====== Repository Anlegen ======
+===== Repository Anlegen =====
 
 Um also unser Projekt zu verfolgen, müssen wir zuerst ein Repository anlegen.
-
-Dazu legen wir zuerst ein Verzeichnis an, und wechseln dort hinein
+Dazu legen wir ein Verzeichnis an, und wechseln dort hinein
 <code>mkdir helloworld
 cd helloworld
-</code>
+</code> \\ \\
 
 Anschließend erstellen - oder besser gesagt initiieren - wir ein
-Git-Repository:
-<code>git init</code>
+Git-Repository: <code>git init</code> \\ \\
 
 Und schon ist es erstellt! Überprüfen könnt ihr das, indem ihr mit ''ls -a''
 alle Unterverzeichnisse anzeigen lasst. Das Repository ist das
 ''.git''-Unterverzeichnis.
 
 
-====== Neue Dateien hinzufügen ======
+===== Neue Dateien hinzufügen =====
 
 Jetzt wollen wir mit der Arbeit beginnen. Dazu werden wir das typische
 "Hello World"- Programm schreiben, und es anschließend eintragen. Ihr könnt die
@@ -64,16 +60,14 @@ int main()
 
 EOF
 
-</code>
+</code> \\ \\
 
 
 Wollt ihr diese Datei nun eintragen, müsst ihr Git erstmal bekannt geben, dass
-es eure Datei verfolgen soll. Dies geschieht mit dem Befehl **add**:
-<code>git add helloworld.c</code>
+es eure Datei verfolgen soll. Dies geschieht mit dem Befehl **add**: <code>git add helloworld.c</code> \\ \\
 
 Anschließend müssen wir die Änderungen **commiten** (das bedeutet Eintragen).
-Dies geschieht mit dem **commit**-Befehl:
-<code>git commit</code>
+Dies geschieht mit dem **commit**-Befehl: <code>git commit</code> \\ \\
 
 
 Dies startet euren [[install#Editor|eingestellten]] Editor, mit dem ihr den
@@ -85,8 +79,7 @@ Worten wie möglich was ihr wozu getan habt.
 
 Das Format ist dabei zwar völlig frei Wählbar, es empfiehlt sich allerdings ein
 bestimmtes Format einzuhalten, damit ihr die Änderungen bequem lesen könnt:
-  * Die erste Zeile beschreibt in aller Kürze die Änderung, und darf nicht länger
-als  50 Zeichen sein.
+  * Die erste Zeile beschreibt in aller Kürze die Änderung, und darf nicht länger als  50 Zeichen sein.
   * Die zweite Zeile bleibt leer
   * Die darauffolgenden Zeilen könnt ihr frei zur Beschreibung verwenden.
 
@@ -102,23 +95,214 @@ eine kleine Zusammenfassung der Änderungen. Bei mir sieht das Beispielsweise so
 <code>[master (Basis-Version) 0b78177] Initial commit
  1 Datei geändert, 9 Zeilen hinzugefügt(+)
  create mode 100644 helloworld.c
-</code>
+</code> \\ \\
 
 Gratulation! Damit habt ihr euren ersten Commit getätigt!
 
 
-====== Dateien ändern ====== 
+Da das jetzt so schön war, fügen wir noch eine Datei names ''Makefile'' hinzu:
+<code>
+.PHONY: clean
+all: helloworld
+
+helloworld: helloworld.c
+
+clean:
+	$(RM) helloworld
+<code>
+
+<code bash>
+git add Makefile
+git commit -m "Makefile hinzugefügt"
+</code> \\ \\
+
+===== Verzeichnisse hinzufügen =====
+
+Dem **add**-Befehl könnt ihr auch Verzeichnisse hizufügen. Das tut aber 
+wahrscheinlich nicht das was ihr denkt: es fügt alle **Dateien** und 
+Unterverzeichnisse hinzu, und damit zwar automatisch das angegebene Verzeichnis
+selbst. Leere Verzeichnisse können allerdings nicht hinzugefügt werden!
+
+Begründet wird das damit dass Git ja ein "Content"-Tracker ist, und
+Verzeichnisse keine Inhalte sind, sondern nur Organisationsstrukturen.
+
+Wie auch immer, ihr könnt leider keine leeren Verzeichnisse in Git verfolgen.
+Es gibt allerdings einen Trick, um das zu erreichen: erstellt eine Datei
+namens ''.gitignore'' (siehe [[#Dateien ignorieren - .gitignore|unten]]) in dem
+Verzeichnis das ihr verfolgen wollt. Dann ist es zwar nicht ganz leer, enthält
+aber nur eine versteckte, leere Datei.
 
 
-====== Dateien löschen ======
+
+===== Dateien ändern =====
+
+Nun werden wir versuchen, eine vorhandene Datei zu Ändern, und diese Änderungen
+einzutragen.
 
 
-====== Abkürzungen ======
+Vorher möchte ich allerdings eure Aufmerksamkeit auf einen neuen Befehl lenken:
+der **status**-Befehl:
+<code>git status</code> \\ \\
+
+Dieser Befehl gibt euch Auskunft über den derzeitigen Status eurer Arbeitskopie:
+auf welchem [[branches|Zweig]] ihr euch befindet, welche Dateien geändert sind,
+und welche zum Eintragen markiert sind. Kurz: er gibt Auskunft darüber
+"was gerade abgeht".
+
+Dementsprechend würde ich euch empfehlen, dass ihr ihn
+immer dann eingebt, wenn ihr nicht sicher seid in welchen Zustand sich eure
+Arbeitskopie gerade befindet. Dies wird am Anfang noch öfter nötig sein, mit der
+Erfahrung bekommt ihr aber ein Gefühl dafür.
+
+
+Gebt nun diesen Befehl ein, und seht euch die Ausgabe an. Bei mir sieht das so
+aus:
+<code># Auf Zweig master
+nichts zum Eintragen (Arbeitsverzeichnis sauber)</code> \\ \\
+
+Klar. Wir befinden uns auf dem Zweig "master" (unser "Haupt"-Zweig), und wir
+haben seit unserem Letzten Commit nichts geöndert (deswegen ist das 
+Arbeitsverzeichnis "sauber") und auch nichts mit **add** hinzugefügt (deswegen
+haben wir "nichts zum Eintragen").
+
+
+Jetzt werden wir unser Programm ändern. Das geschieht wie auch immer ihr das
+normalerweise macht. Sagen wir, wir wollen nun nicht mehr die Welt grüßen,
+sondern nur proggen.org. Ändert also die 5. Zeile in der Datei ''helloworld.c''
+und speichert die Datei. Wenn ihr zu faul seid, kopiert einfach folgendes 
+Zauberkommando in eure Kommandozeile:
+<code>sed -i -e 's/World!/proggen.org!/g' helloworld.c</code> \\ \\
+
+
+So. Nun rufen wir noch einmal ''git status'' auf. Die Ausgabe sieht bei mir so
+aus:
+
+<code># Auf Zweig master
+# Änderungen, die nicht zum Eintragen bereitgestellt sind:
+#   (benutze "git add <Datei>..." zur Aktualisierung der Eintragung)
+#   (benutze "git checkout -- <Datei>..." um die Änderungen im Arbeitsverzeichnis zu verwerfen)
+#
+#	geändert:   helloworld.c
+#
+keine Änderungen zum Eintragen hinzugefügt (benutze "git add" und/oder "git commit -a")
+</code> \\ \\
+
+Wir befinden uns immer noch auf dem Zweig "master", haben aber jetzt Änderungen
+in unserem Arbeitsverzeichnis. Habt ihr [[install#Farben|color.ui]]
+eingeschalten, wird die Datei ''helloworld.c'' rot angezeigt.
+
+
+Achtung: wenn ihr jetzt commiten würdet, würde das gar nicht gehn, da **keine**
+Änderungen bereitgestellt sind! Dies ist ein Unterschied zu anderen 
+Versionsverwaltungssystemen (wie z.B. Subversion), denn dort würden alle
+Änderungen an bekannten Dateien eingetragen werden.
+
+
+Nicht so bei Git. Hier müsst ihr die Änderungen zuerst "Bereitstellen", und zwar
+mit dem Befehl **add**. Dieser fügt die Änderungen an einer Datei in die
+sogenannte "staging Area" oder kurz "Index" hinzu.
+
+Wenn ihr den **commit**-Befehl aufruft, werden immer nur diejenigen Änderungen
+commitet, die sich im Index befinden.
+Für Novizen sieht das erst mal wie Mehrarbeit im Vergleich zu SVN aus, ihr
+werdet diese Funktionsweise aber mit der Zeit zu schätzen lernen!
+
+
+Nun gut, jetzt tragen wir unsere Änderungen ein:
+<code>git add helloworld.c</code> \\ \\
+
+Sehen wir uns den **status** an:
+<code>git status</code> \\ \\
+
+Die Ausgabe ist:
+<code># Auf Zweig master
+# zum Eintragen bereitgestellte Änderungen:
+#   (benutze "git reset HEAD <Datei>..." zum Herausnehmen aus der Bereitstellung)
+#
+#	geändert:   helloworld.c
+#</code> \\ \\
+
+Wie ihr nun seht, sind die Änderungen die wir gemacht haben
+"zum Eintragen bereitgestellt" - die Datei ''helloworld.c'' ist nun Grün.
+Man sagt, die Änderungen befinden sich "im Index". Der "Index" ist der Zustand
+der Arbeitskopie, den sie beim nächsten Commit haben soll.
+
+
+Wir könnten jetzt einen Commit tätigen, und die Änderungen würden aufgezeichnet 
+werden. Das machen wir allerdings noch nicht.
+
+Wir sehen uns zuerst nochmal an, was passiert wenn man weitere Änderungen
+tätigt. Ändern wir die ''Makefile''-Datei zu folgendem:
+
+<code>
+.PHONY: clean
+all: helloworld
+
+helloworld: helloworld.c
+	$(CC) $(CFLAGS) -o $@ $<
+
+clean:
+$(RM) helloworld
+
+</code> \\ \\
+
+
+Sehen wir uns den jetzigen **Status** an:
+<code>git status</code> \\ \\
+
+<code># Auf Zweig master
+# zum Eintragen bereitgestellte Änderungen:
+#   (benutze "git reset HEAD <Datei>..." zum Herausnehmen aus der Bereitstellung)
+#
+#	geändert:   helloworld.c
+#
+# Änderungen, die nicht zum Eintragen bereitgestellt sind:
+#   (benutze "git add <Datei>..." zur Aktualisierung der Eintragung)
+#   (benutze "git checkout -- <Datei>..." um die Änderungen im Arbeitsverzeichnis zu verwerfen)
+#
+#	geändert:   Makefile
+#
+</code> \\
+Jetzt sehen wir, dass ''helloworld.c'' bereitgestellt (im Index) ist, und das
+''Makefile'' nicht. Würdet ihr jetzt den Commit tätigen, würde nur die
+''helloworld.c''-Datei eingetragen werden. Das seht ihr auch an der Farbe:
+''helloworld.c'' ist grün und ''Makefile'' ist rot.
+
+
+Wir können uns die Änderungen auch detailliert anzeigen lassen. Wollt ihr euch
+die Änderungen ansehen, die beim nächsten commit eingetragen werden, benutzt
+folgenden Befehl: <code>git diff --cached</code> \\
+
+
+Wollt ihr die Änderungen zwischen dem Index und dem jetzigen Zustand der
+Arbeitskopie anzeigen (also alle noch nicht bereitgestellten Änderungen),
+benutzt Folgendes: <code>git diff</code> \\
+
+
+Wollt ihr die gesamten Änderungen, die seit dem letzten Commit geschehen sind
+anzeigen lassen, benutzt
+<code>git diff HEAD</code> \\
+
+Näheres zu **diff** und HEAD findet ihr im [[readhis|nächsten Kapitel]].
+
+
+Stellen wir nun alle Änderungen bereit und erstellen den Commit: <code>git add Makefile
+git commit</code> \\
+
+Als Commit-Nachricht geben wir "Grüße nur proggen.org statt der Welt" ein.
+
+Überprüft ihr jetzt noch einmal den **Status**, sollte das Arbeitsverzeichnis
+wieder als "sauber" angezeigt werden.
+
+===== Dateien löschen =====
+
+
+===== Abkürzungen =====
 
 Ist die Commit-Nachricht kurz, könnt ihr sie auch direkt als 
 Kommandozeilenparameter angeben. Dazu überreicht den Parameter ''<nowiki>--</nowiki>message'' oder ''-m'' und danach die Nachricht in Anführungszeichen:
 
-<code>git commit -m "Initial commit"</code>
+<code>git commit -m "Initial commit"</code> \\
 
 Damit spart ihr euch, dass der Editor aufgerufen wird.
 
@@ -127,7 +311,7 @@ Damit spart ihr euch, dass der Editor aufgerufen wird.
 Außerdem könnt alle Änderungen an jeder Datei, die Git bereits kennt eintragen
 lassen und damit das manuelle eintragen in den Index umgehen. Dies geschieht mit
 dem Schalter ''-a''. Ihr könnt ihn auch zusammen mit ''-m'' verwenden:
-<code>git commit -am "Einiges geändert"</code>
+<code>git commit -am "Einiges geändert"</code> \\
 
 Dazu ein kleiner Tip für euch: FINGER WEG VON DIESER OPTION! Obwohl das quasi
 das "Standardverhalten" von SVN wäre, würde ich euch Raten das nicht zu tun.
@@ -135,9 +319,10 @@ Es ist (mir selbst, aber auch anderen) schon oft genug passiert, dass deswegen
 Dateien fehlen, zuviel sind, oder die Falschen Änderungen eingetragen wurden.
 Tut euch selbst einen Gefallen, und lasst es.
 
-====== Dateien ignorieren - .gitignore ======
+===== Dateien ignorieren - .gitignore =====
 
-====== Stückweises hinzufügen zum Index ====== 
+
+===== Stückweises hinzufügen zum Index ===== 
 
 
 [[install|< Zurück]] | [[start|Index]] | [[readhis|Weiter >]]

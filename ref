@@ -39,6 +39,16 @@ Siehe [[makehis|Geschichte schreiben]]
     <code>git commit -m "Nachricht"</code>
 
 
+== Änderungen betrachten ==
+
+Änderungen ansehen, die beim nächsten Commit eingetragen werden: <code>git diff --cached</code> \\
+
+Änderungen zwischen dem Index und dem jetzigen Zustand der
+Arbeitskopie anzeigen: <code>git diff</code> \\
+
+Änderungen, die seit dem letzten Commit geschehen sind
+anzeigen lassen: <code>git diff HEAD</code> \\
+
 == Den Inhalt eines Branches in ein Archiv exportieren ==
 
 <code>$git archive -o $FILE_NAME.zip $BRANCH</code>
