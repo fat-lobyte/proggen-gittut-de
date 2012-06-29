@@ -2,11 +2,76 @@
 
 ===== Was ist Git? =====
 
+===== Git's Philosophie =====
+
+  * Keine Kompromisse!
+  * Es geht um **content**
+
 ===== Wieso Git? =====
 
 ===== Wieso nicht Git? =====
 
 ===== Befehle und Dokumentation =====
+
+Das was man heutzutage einfach mit dem Wort "Git" bezeichnet ist eigentlich
+nicht ein einzelnes Programm, vielmehr sind das viele kleine Programme die
+ineinandergreifen und das Git-Datenbankformat als Gemeinsamkeit haben.
+Dies entspricht der Unix-Philosophie, die darin besteht viele kleine Tools
+anzubieten, durch deren geschickte Kombination man Dinge erreichen kann, die man
+sich mit einem monolithischen "alleskönner"-Programm nie erträumen lassen hätte
+können. 
+
+
+Und so begann Git auch als eine Sammlung von C-Programmen, Bash- und
+Perl-Skripten, die man einzeln ansteuern konnte. Mittlerweile sind die Skripte
+zur Geschwindigkeitsoptimierung nach C portiert worden.
+
+
+Git besteht also aus einer Sammlung von Befehlen, auf die man mit
+'''git <Befehl>''' zugreifen kann.
+In wirklichkeit ist das "git"-Programm, das man für diese Befehle aufruft nur
+eine Weiterleitung, denn jeder Befehl ist ein eigenständiges Programm
+mit ausführbarer Datei und eigener Dokumentation.
+
+Früher konnten die Befehle auch direkt als '''git-<Befehl>''' aufgerufen werden,
+mittlerweile ist dies aber nicht mehr möglich. Die einzelnen Befehle leben
+in dem Verzeichnis ''/usr/local/libexec/git-core/''.
+
+Um die Hilfe für Git die einzelnen Git-Befehle aufzurufen, könnt ihr entweder
+'''git help <Befehl>''' ausführen, oder aber folgendes: '''man git-<Befehl>'''
+
+
+Dementsprechend ist auch die Benutzerschnittstelle im Vergleich zu anderen
+Versionsverwaltungssystemen wie z.B. Bazaar nicht ganz glatt. Es gibt immer
+wieder kleinere inkonsistenzen, und manche Dinge mögen auch unlogisch
+erscheinen. Auch wenn das oft gute Gründe hat, sind manche Probleme historisch
+bedingt.
+
+
+Die Befehle von Git kann man wie ein Badezimmer aufgeteilt: auf der einen
+Seite gibt es das "porcelain", das Porzellan, und auf der anderen Seite das
+"plumbing", also die Leitungen.
+
+Das Porzellan sind dabei alle Befehle, mit denen der Benutzer tagtäglich agiert,
+(wie mit dem Porzellan in einem Bad!) wie z.B. commit, add, log, und so weiter.
+
+Getrieben werden diese ganzen Befehle von dem "plumbing", den Leitungen, die der
+Durchschnittsbürger nie in seinem Leben zu sehen bekommen sollte.Diese Befehle
+sind hauptsächlich für die Interaktion mit der Datenbank vorhanden und sollten
+nur von Profis direkt aufgerufen werden. Dazu gehören Dinge wie git-check-ref-format, git-filter-branch, git-checkout-index, und so weiter. Zugegebenermaßen
+habe ich von den meisten dieser Befehle noch nie gehört.
+
+
+Aufgrund dieser Modularität kann man selbst (und natürlich die ganze Community!)
+wunderbar Skripte bauen, die Funktionalität erweitern und Git nach seinen
+Bedürfnissen anpassen.
+
+Und dies ist eine der größten Stärken von Git: manchmal lässt Git zwar einen
+allzutiefen Blick unter die Haube zu, dafür kommt es aber mit einer fast
+unschlagbaren Flexibilität. Ich kann mir übrigens gut vorstellen, dass das einer
+der Gründe ist, warum Git noch immer als "Einsteigerunfreundlich" gilt.
+
+
 
 ===== Englisch vs. Deutsch =====
 
