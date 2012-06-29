@@ -225,6 +225,12 @@ Wie ihr nun seht, sind die Änderungen die wir gemacht haben
 Man sagt, die Änderungen befinden sich "im **Index**". Der "Index" ist der Zustand
 der Arbeitskopie, den sie beim nächsten Commit haben soll.
 
+Beachtet, dass wenn ihr helloworld.c jetzt noch einmal bearbeiten würdet, würden
+die neuen Änderungen **nicht** eingetragen werden. Wollt ihr die Datei weiter
+bearbeiten und die Gesamtänderungen commiten, müsst ihr sie nach dem Ändern noch
+einmal mit **add** hinzufügen.
+
+
 
 Wir könnten jetzt einen Commit tätigen, und die Änderungen würden aufgezeichnet 
 werden. Das machen wir allerdings noch nicht.
@@ -284,6 +290,14 @@ anzeigen lassen, benutzt
 Näheres zu **diff** und HEAD findet ihr im [[readhis|nächsten Kapitel]].
 
 
+
+Bevor man die Änderungen tatsächlich commitet, sollte man stets überprüfen das
+nur die richtigen Änderungen, die ihr eintragen wollt auch tatsächlich
+ bereitgestellt sind. Überprüft mit '''git status''', ob auch die richtigen 
+Dateien markiert sind, und eventuell mit '''git diff <nowiki>--</nowiki>cached''' was eingetragen
+wird. Wenn ihr euch vergewissert habt, dass alles in Ordnung ist, könnt ihr
+weitermachen.
+
 Stellen wir nun alle Änderungen bereit und erstellen den Commit: <code>git add Makefile
 git commit</code> \\
 
@@ -292,8 +306,86 @@ Als Commit-Nachricht geben wir "Grüße nur proggen.org statt der Welt" ein.
 Überprüft ihr jetzt noch einmal den **Status**, sollte das Arbeitsverzeichnis
 wieder als "sauber" angezeigt werden.
 
+
 ===== Dateien löschen und Umbenennen =====
 
+Selbstverständlich kann man in Git auch Dateien löschen. Dies geschieht mit dem
+Befehl **rm**: <code>git rm <datei></code> \\
+
+Man kann auch ganze Verzeichnisse löschen, dazu übergibt man den Schalter
+'''-r''': <code>git rm -r <verzeichnis></code> \\
+
+
+Das werden wir jetzt an unserem Beispielprojekt üben: zunächst erstellen wir
+eine Kopie der Datei ''helloworld.c'', und löschen dann die Ursprungsdatei:
+<code bash>cp helloworld.c hello.c
+git rm helloworld.c</code> \\
+
+Ein ''git status'' zeigt nun folgendes an:
+<code># Auf Zweig master
+# zum Eintragen bereitgestellte Änderungen:
+#   (benutze "git reset HEAD <Datei>..." zum Herausnehmen aus der Bereitstellung)
+#
+#	gelöscht:    helloworld.c
+#
+# Unverfolgte Dateien:
+#   (benutze "git add <Datei>..." zum Einfügen in die Eintragung)
+#
+#	hello.c
+</code> \\
+
+Das Löschen der Datei ist nun bereitgestellt (im Index), und mit ''ls'' könnt
+ihr Überprüfen, dass die Datei auch von eurem Dateisystem gelöscht ist.
+
+
+
+Jetzt werden wir die Kopie der gelöschten Datei wieder zu unserem Projekt 
+hinzufügen, das geschieht in der gewohnten Weise mit
+<code>git add hello.c</code> \\
+
+Ein '''git status''' zeigt nun folgendes:
+<code># Auf Zweig master
+# zum Eintragen bereitgestellte Änderungen:
+#   (benutze "git reset HEAD <Datei>..." zum Herausnehmen aus der Bereitstellung)
+#
+#	umbenannt:    helloworld.c -> hello.c
+#</code> \\
+
+Wie ihr seht, hat Git, obwohl wir die Datei kopiert, das Original gelöscht und
+die Kopie hinzugefügt haben die Operation als "Umbennen" erkannt.
+
+
+
+Tatsächlich ist es so, dass es unter Git kein richtiges "Umbennen" gibt! Es gibt
+zwar den **mv**-Befehl der auch funktioniert wie man es erwarten würde, dieser
+tut aber nichts anderes als wir gerade gemacht haben - und zwar die alte Datei
+löschen und die gleiche Datei mit anderem Namen hinzufügen.
+
+Das Erkennen ob es sich dabei um Umbennenen handelt, übernimmt Git. Das mag
+auf den ersten Blick zwar Sinnfrei erscheinen, aber: in der Philosophie von Git
+zählt nur eines: der **Inhalt**. Für Git bewegen sich nur Codezeilen, wie die
+dazugehörigen Dateien heißen oder wie diese auf dem Dateisystem repräsentiert
+sind ist Git egal.
+Das ermöglicht vielen Git-Befehlen so effektiv wie möglich zu sein.
+
+
+
+Um unsere Änderungen abzuschließen, sollten wir noch eine kleinigkeit im
+Makefile ändern: und zwar alle vorkomnisse von "helloworld" auf "hello" zu
+ändern. Das geht mit folgendem Zauberkommando:
+<code>sed -i -e 's/helloworld/hello/g' Makefile</code> \\
+
+Diese Änderungen stellen wir ebenfalls bereit:
+<code>git add Makefile</code> \\
+
+Bevor wir commiten, sollten wir uns zumindest mit '''git status''' ansehen, ob
+alle Änderungen so eingetragen werden, wie wir uns das gedacht haben. Eventuell
+könnt ihr die Änderungen mit '''git diff <nowiki>--</nowiki>cached''' überprüfen. Erst wenn ihr
+sicher seid, dass alles in Ordnung ist, tragen wir die Änderungen ein:
+
+<code>git commit</code> \\
+
+Als Nachricht geben wir dabei "helloworld.c umbenannt" ein.
 
 ===== Abkürzungen =====
 
