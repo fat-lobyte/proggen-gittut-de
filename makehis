@@ -81,7 +81,8 @@ Das Format ist dabei zwar völlig frei Wählbar, es empfiehlt sich allerdings ei
 bestimmtes Format einzuhalten, damit ihr die Änderungen bequem lesen könnt:
   * Die erste Zeile beschreibt in aller Kürze die Änderung, und darf nicht länger als  50 Zeichen sein.
   * Die zweite Zeile bleibt leer
-  * Die darauffolgenden Zeilen könnt ihr frei zur Beschreibung verwenden.
+  * Die darauffolgenden Zeilen könnt ihr frei zur Beschreibung verwenden,
+    diese sollten aber nicht länger als 76 Zeichen sein.
 
 
 Für den ersten Commit hat es sich eingebürgert einfach nur "Initial commit" als
@@ -107,7 +108,8 @@ helloworld: helloworld.c
 
 clean:
 	$(RM) helloworld
-<code>
+
+</code> \\
 
 <code bash>
 git add Makefile
@@ -117,9 +119,10 @@ git commit -m "Makefile hinzugefügt"
 ===== Verzeichnisse hinzufügen =====
 
 Dem **add**-Befehl könnt ihr auch Verzeichnisse hizufügen. Das tut aber 
-wahrscheinlich nicht das was ihr denkt: es fügt alle **Dateien** und 
-Unterverzeichnisse hinzu, und damit zwar automatisch das angegebene Verzeichnis
-selbst. Leere Verzeichnisse können allerdings nicht hinzugefügt werden!
+nicht das was ihr wahrscheinlich denkt: es fügt alle **Dateien** in diesem
+Verzeichnis und allen Unterverzeichnisse hinzu, und damit zwar automatisch das
+angegebene Verzeichnis selbst. Leere Verzeichnisse können allerdings nicht
+hinzugefügt werden!
 
 Begründet wird das damit dass Git ja ein "Content"-Tracker ist, und
 Verzeichnisse keine Inhalte sind, sondern nur Organisationsstrukturen.
@@ -202,7 +205,7 @@ sogenannte "staging Area" oder kurz "Index" hinzu.
 
 Wenn ihr den **commit**-Befehl aufruft, werden immer nur diejenigen Änderungen
 commitet, die sich im Index befinden.
-Für Novizen sieht das erst mal wie Mehrarbeit im Vergleich zu SVN aus, ihr
+Für Novizen sieht das erstmal wie Mehrarbeit im Vergleich zu SVN aus, ihr
 werdet diese Funktionsweise aber mit der Zeit zu schätzen lernen!
 
 
@@ -221,7 +224,7 @@ Die Ausgabe ist:
 #</code> \\
 
 Wie ihr nun seht, sind die Änderungen die wir gemacht haben
-"zum Eintragen bereitgestellt" - die Datei ''helloworld.c'' ist nun Grün.
+"zum Eintragen bereitgestellt" - die Datei ''helloworld.c'' ist nun grün.
 Man sagt, die Änderungen befinden sich "im **Index**". Der "Index" ist der Zustand
 der Arbeitskopie, den sie beim nächsten Commit haben soll.
 
@@ -286,6 +289,10 @@ benutzt Folgendes: <code>git diff</code> \\
 Wollt ihr die gesamten Änderungen, die seit dem letzten Commit geschehen sind
 anzeigen lassen, benutzt
 <code>git diff HEAD</code> \\
+
+mit diesen Befehlen wird das jeweilige diff in einem [[bash:less|Pager]]
+angezeigt. Die Navigation in der Ausgabe könnt ihr hier nachlesen:
+[[bash:less#In der Ausgabe scrollen]].
 
 Näheres zu **diff** und HEAD findet ihr im [[readhis|nächsten Kapitel]].
 
@@ -387,6 +394,22 @@ sicher seid, dass alles in Ordnung ist, tragen wir die Änderungen ein:
 
 Als Nachricht geben wir dabei "helloworld.c umbenannt" ein.
 
+
+[[install|< Zurück]] | [[start|Index]] | [[readhis|Weiter >]]
+------------------------
+
+====== Fortgeschrittene Themen ======
+
+Damit würde ich dieses Kapitel gerne beenden, denn das Wichtigste dazu wie man
+Geschichte schreibt und einträgt ist gesagt. Allerdings gäbe es noch einige
+weitere interessante Punkte, die ich gerne ansprechen würde. Diese werden zwar
+nützlich sein, sind aber nicht zwingend für die Benutzung von Git erforderlich.
+
+Aus diesem Grund werden diese Punkte in dem Abschnitt "Fortgeschrittene Themen"
+angesprochen. Wenn ihr mit dem bisher gelernten überfordert sein, rate ich euch
+diesen Teil zu überspringen und später darauf zurückzukommen.
+Ist euer Kopf noch frisch, könnt ihr ruhig weitermachen.
+
 ===== Abkürzungen =====
 
 Ist die Commit-Nachricht kurz, könnt ihr sie auch direkt als 
@@ -397,6 +420,9 @@ Kommandozeilenparameter angeben. Dazu überreicht den Parameter ''<nowiki>--</no
 Damit spart ihr euch, dass der Editor aufgerufen wird.
 
 
+Mit '''git add -u''' könnt ihr alle Änderungen an jeder Datei, die Git bereits
+kennt in den Index stellen.
+
 
 Außerdem könnt alle Änderungen an jeder Datei, die Git bereits kennt eintragen
 lassen und damit das manuelle eintragen in den Index umgehen. Dies geschieht mit
@@ -404,12 +430,77 @@ dem Schalter ''-a''. Ihr könnt ihn auch zusammen mit ''-m'' verwenden:
 <code>git commit -am "Einiges geändert"</code> \\
 
 Dazu ein kleiner Tip für euch: FINGER WEG VON DIESER OPTION! Obwohl das quasi
-das "Standardverhalten" von SVN wäre, würde ich euch Raten das nicht zu tun.
-Es ist (mir selbst, aber auch anderen) schon oft genug passiert, dass deswegen
-Dateien fehlen, zuviel sind, oder die Falschen Änderungen eingetragen wurden.
+das "Standardverhalten" von SVN wäre, würde ich euch raten das nicht zu tun.
+Es ist (mir selbst, aber auch Anderen) schon oft genug passiert, dass deswegen
+Dateien fehlen, unbeabsichtigt hinzegefügt, oder die falschen Änderungen
+eingetragen wurden.
 Tut euch selbst einen Gefallen, und lasst es.
 
-===== Dateien ignorieren - .gitignore =====
+
+===== Dateien ignorieren - .gitignore und .git/info/exclude =====
+
+Jedes mal, wenn ihr ''git status'' aufruft, werden alle Dateien, die Git nicht
+bekannt sind als "nicht verfolgt" ("untracked") angezeigt. Dies stellt
+eigentlich kein Problem dar, denn solange ihr diese Dateien nicht manuell
+hinzufügt, wird es keine Probleme geben.
+
+
+Sind das allerdings Dateien, die öfters auftauchen und die die Ausgabe von
+''git status'' nicht zumüllen sollen, gibt es eine Möglichkeit diese dauerhaft
+auszublenden.
+
+Das ist zum Beispiel für temporäre Dateien des Bau-Systems, für kompilierte
+Dateien oder für Backupdateien eures Editors nützlich.
+
+
+Diese Dateien und Ordner könnt ihr nach einem bestimmten Muster entweder
+in die Datei ''.gitignore'' oder in die Datei ''.git/info/exclude'' eintragen.
+Wohin ihr eure ignorierten Dateien eintragt ist eigentlich egal, allerdings wird
+''.git/info/exclude'' für "private" Dateien (also Dateien, die nur euren eigenen
+Arbeitsfluss betreffen) und ''.gitignore'' für "öffentliche" ignorierte Dateien
+(also Dateien, die bei allen Entwicklern ignoriert werden sollten) verwendet.
+Dementsprechend muss ''.gitignore'' (im Gegensatz zu .git/info/exclude) auch
+zur Geschichte hinzugefügt und eingetragen werden.
+
+Das Muster für die Erkennung der ingorierten Dateien ist relativ einfach:
+  * Leere Zeilen werden ignoriert
+  * Zeilen, die mit einem **#** beginnen, werden ignoriert
+  * Zeilen, die kein '/' (Slash) enthalten, enthalten ein Shell-Glob-Muster, das ihr auch auf der Kommandozeile verwenden könntet, und zwar relativ zum Verzeichnis der .gitignore-Datei (oder vom Wurzelverzeichnis der Arbeitskopie, wenn das Muster nicht in einer ''.gitignore''-Datei steht).
+  * Alle anderen Zeilen enthalten ein Shell-Glob-Muster, in dem der Wildcard nicht auf '/' (Slash) passt. Beispielsweise passt das Muster "Documentation/*.html" auf "Documentation/git.html", aber nicht auf "Documentation/ppc/ppc.html" oder "tools/perf/Documentation/perf.html". 
+  * Muster, die mit einem Slash ('/') enden, passen nur auf Verzeichnisse
+  * Ein Slash ('/') zu beginn passt auf den Beginn eines Pfadnamens. Zum Beispiel passt "/*.c" auf "cat-file.c" aber nicht auf "mozilla-sha1/sha1.c".
+  * Zeilen, die mit einem Rufzeichen (**!**) beginnen kehren die Wirkung des darauffolgenden Ausdrucks um (jede Datei, die **nicht** auf den Ausdruck passt wird ausgeschlossen)
+
+Die Datei ''.gitignore'' könnt ihr in jedes Verzeichnis platzieren. Dabei werden
+bestimmte Muster (siehe oben) relativ zum Pfad der der ''.gitignore''-Datei
+ignoriert.
+
+Diese Datei könntet ihr vielleicht auch dazu nutzen, um "leere" Verzeichnisse in
+Git zu erzwingen. Legt dazu einfach in dem leeren Verzeichnis die
+''.gitignore''-Datei an, fügt diese hinzu und commitet die Änderung.
+Selbstverständlich ist das Verzeichnis dabei nicht tatsächlich Leer, sondern
+enthält nur eine einzige versteckte Datei.
+
+
+Wir werden nun in unserem Projekt alle Dateien ignorieren, die aus dem Quellcode
+gebaut werden können:
+
+<code bash>
+printf 'hello\n' >> .gitignore
+printf '*.o\n' >> .gitignore
+git add .gitignore
+git commit -m ".gitignore hinzugefügt"
+</code> \\
+
+Erzeugt euer Editor noch gerne Backupdateien, die z.B. mit einer Tilde ('~')
+enden, sollten diese ebenfalls ignoriert werden. Dieses Muster kommt nach
+''.git/info/exclude'':
+<code>printf '*~\n' >> .git/info/exclude</code> \\
+
+
+Für die Details und eine vielleicht klarere Erklärung darüber wie Git Dateien
+ignoriert, seht euch bitte die [[http://www.kernel.org/pub/software/scm/git/docs/gitignore.html|Git-Hilfe zu .gitnigore]] mit
+''git help ignore'' an.
 
 
 ===== Stückweises hinzufügen zum Index ===== 
