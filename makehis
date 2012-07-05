@@ -503,8 +503,60 @@ ignoriert, seht euch bitte die [[http://www.kernel.org/pub/software/scm/git/docs
 ''git help ignore'' an.
 
 
-===== Stückweises hinzufügen zum Index ===== 
+===== Stückweises hinzufügen zum Index =====
 
+Der Sinn des Index' besteht unter anderem darin, dass man an einer Arbeitskopie
+mehrere Änderungen hintereinander ausführen kann, und diese dann in der
+Geschichte als "schrittweise" Änderungen, in mehreren Commits darstellen kann.
+
+Mit dem bisher Gelernten kann man nur ganze Dateien zum Index hinzufügen,
+allerdings könnte es sein dass man an einer Datei mehrere Änderungen gemacht
+hat, die man gerne in verschiedenen Commits hätte.
+
+
+Für diesen Fall bietet Git eine Lösung an: man kann die Änderung an einer oder
+mehreren Dateien "stückweise" hinzufügen. Ein "Stück" ist in diesem Fall ein
+sogenannter **Hunk**, ein Teil eines Patches.
+
+Seht ihr euch nämlich ein Diff an, werdet ihr bemerken, dass ein Patch aus
+mehreren Bereichen besteht: den hinzugefügten Zeilen, den entfernten Zeilen und
+dem "Kontext", der um die geänderten Zeilen ist. Einen solchen Bereich
+bezeichnet man als Hunk.
+
+Näheres zum Format von Patches findet ihr in der
+[[bash:cmd:diffpatch|Wiki-Seite von Diff/Patch]].
+
+
+Mit Git hat man die Möglichkeit, die Änderungen an einer Datei in diesen "Hunks"
+in den Index zu stellen, und dazu übergebt ihr ''git add'' den Schalter ''-p''
+oder ''<nowiki>--</nowiki>patch'':
+
+<code>git add -p <Pfade> ...</code> \\
+
+Tut ihr das, kommt ihr in eine Art "interaktiven Hinzufügemodus", bei dem euch
+jeder Hunk gezeigt wird und ihr entscheiden müsst, ob ihr ihn bereitstellen
+wollt oder nicht.
+
+Mit **y** könnt ihr ihn hinzufügen, mit **n** ablehnen und mit **q** das
+Hinzufügen beenden.
+
+Ihr könnt außerdem den Hunk bis zu einer gewissen Mindestgröße weiter Teilen,
+und zwar mit der Taste **s**. Wollt ihr einen Hunk //kleiner// als diese
+Mindestgröße bereitstellen, müsst ihr den Hunk manuell eingben (wählt dazu die
+Option **e**). Ich muss allerdings zugeben, dass ich es noch nie geschafft habe,
+einen solchen manuellen Hunk ordnungsgemäß hinzuzufügen ((wenn ihr es geschafft
+habt, bitte meldet euch im Diskussionsthread! FIXME)).
+
+Dabei gibt es noch weitere Optionen, die ihr mit der Taste **?** abfragen könnt.
+
+
+Seid ihr mit dem stückweisen Hinzufügen fertig (indem ihr entweder alle Hunks
+abgearbeitet habt oder die Abfrage vorzeitig verlassen habt), dann sollten
+bei einem ''git status'' die Dateien doppelt angezeigt werden
+(außer ihr habt keinen oder alle Hunks angenommen):
+als Dateien mit bereitgestellten und mit nicht bereitgestellten Änderungen
+ - klar, ihr habt ja nur einen Teil der Änderungen bereitgestellt und den
+anderen nicht.
 
 [[install|< Zurück]] | [[start|Index]] | [[readhis|Weiter >]]
 
