@@ -27,6 +27,8 @@ Siehe [[makehis|Geschichte schreiben]]
 
   * Änderungen in den Index stellen:
     <code>git add datei1 datei2 datei3</code>
+  * Änderungen stückweise in den Index stellen:
+    <code>git add -p datei1 datei2 datei3</code>
   * Wenn Änderungen bereits im Index sind:
     <code>git commit</code>
   * Alle Änderungen an bekannten Dateien in den Index stellen und commiten
@@ -47,8 +49,7 @@ anzeigen lassen: <code>git diff HEAD</code> \\
 
 ==== Den Inhalt eines Branches in ein Archiv exportieren ====
 
-<code>git archive -o $FILE_NAME.zip $BRANCH</code>
+<code>git archive -o $FILE_NAME.zip $BRANCH</code> \\
 
-
-<code>git archive --format=tar --prefix=$NAME $BRANCH | gzip - > $NAME.tar.gz</code>
+<code>git archive --format=tar --prefix=$NAME/ $BRANCH | gzip - > $NAME.tar.gz</code>
 

@@ -4,6 +4,10 @@
 Ein Verzeichnis, das von einem Versionsverwaltungssystem (z.B. Git) verfolgt
 wird und an dem man Arbeiten kann.
 
+== Bereitstellen ==
+(Änderungen Bereitstellen)
+siehe [[#to Stage]]
+
 == Commit ==
 Ein Eintrag in die Geschichte des Projektes, gespeichert in einem
 [[#Repository]].
@@ -20,6 +24,9 @@ soll. Englisch: "staging area" oder "index".
 Eine Datenbank, Datenstruktur oder Verzeichnis das die gesamte Geschichte des
 Projektes enthält.
 Bei Git ist es das ''.git''-Verzeichnis in jeder Arbeitskopie.
+
+== to Stage (engl.) ==
+Änderungen für einen [[#Commit]] bereitstellen, in den [[#Index]] stellen
 
 == Staging area ==
 Siehe [[#Index]]
