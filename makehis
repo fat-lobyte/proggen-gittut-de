@@ -118,8 +118,11 @@ git commit -m "Makefile hinzugefügt"
 
 ===== Verzeichnisse hinzufügen =====
 
-Dem **add**-Befehl könnt ihr auch Verzeichnisse hizufügen. Das tut aber 
-nicht das was ihr wahrscheinlich denkt: es fügt alle **Dateien** in diesem
+Dem **add**-Befehl könnt ihr auch ganze Verzeichnisse hizufügen:
+
+<code bash>git add <verzeichnis>/</code>
+
+Das tut aber nicht das was ihr wahrscheinlich denkt: es fügt alle **Dateien** in diesem
 Verzeichnis und allen Unterverzeichnisse hinzu, und damit zwar automatisch das
 angegebene Verzeichnis selbst. Leere Verzeichnisse können allerdings nicht
 hinzugefügt werden!
@@ -432,7 +435,7 @@ dem Schalter ''-a''. Ihr könnt ihn auch zusammen mit ''-m'' verwenden:
 Dazu ein kleiner Tip für euch: FINGER WEG VON DIESER OPTION! Obwohl das quasi
 das "Standardverhalten" von SVN wäre, würde ich euch raten das nicht zu tun.
 Es ist (mir selbst, aber auch Anderen) schon oft genug passiert, dass deswegen
-Dateien fehlen, unbeabsichtigt hinzegefügt, oder die falschen Änderungen
+Dateien fehlen, unbeabsichtigt hinzugefügt, oder die falschen Änderungen
 eingetragen wurden.
 Tut euch selbst einen Gefallen, und lasst es.
 
@@ -445,7 +448,7 @@ eigentlich kein Problem dar, denn solange ihr diese Dateien nicht manuell
 hinzufügt, wird es keine Probleme geben.
 
 
-Sind das allerdings Dateien, die öfters auftauchen und die die Ausgabe von
+Sind das allerdings viele Dateien, die öfters auftauchen und die die Ausgabe von
 ''git status'' nicht zumüllen sollen, gibt es eine Möglichkeit diese dauerhaft
 auszublenden.
 
@@ -562,6 +565,6 @@ anderen nicht.
 
 ------------------------
 
-Hat dir diese Antwort geholfen? Wenn nicht oder wenn du Verbesserungs- bzw.
+Hat dir dieser Artikel geholfen? Wenn nicht oder wenn du Verbesserungs- bzw.
 Erweiterungsvorschläge hast, dann schreib das bitte einfach auf die FIXME Diskussionsseite.
 
