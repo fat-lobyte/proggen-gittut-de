@@ -1,0 +1,117 @@
+====== Geschichte lesen (log, reset, checkout) ======
+
+Wenn ein Versionsverwaltungssystem Geschichte schreiben könnte, aber nicht lesen, dann wäre das ganze Ding nicht besonders nützlich.
+
+Selbstverständlich kann man mit Git die bisherigen Commits auch einsehen, und zwar auf verschiedenen Wegen.
+
+
+
+
+
+===== Commit-Geschichte einsehen (log) =====
+
+Die einfachste Möglichkeit um bisherige Commits einzusehen ist der Befehl ''log''
+
+\\
+<code bash>git log</code>
+
+Als Antwort bekommen wir eine Liste von allen Einträgen, die wir bis jetzt getätigt haben in einem [[bash:less|Pager]]
+angezeigt ([[bash:less#In der Ausgabe scrollen|scrollen]] mit j und k). Die erste Seite sieht bei mir so aus:
+
+<code>commit bb1d6540e2aec62281effac0074c985c17121849
+Author: Alexander Korsunsky <fat.lobyte9@gmail.com>
+Date:   Thu Jan 24 20:40:47 2013 +0100
+
+    .gitignore hinzugefügt
+
+commit a502b788ab8eed19dcc1d692f2aca5004b2e93b4
+Author: Alexander Korsunsky <fat.lobyte9@gmail.com>
+Date:   Thu Jan 24 20:38:26 2013 +0100
+
+    helloworld.c umbenannt
+
+commit 742ea1e56777defc18f545163b83b8e3a168d062
+Author: Alexander Korsunsky <fat.lobyte9@gmail.com>
+Date:   Thu Jun 28 12:01:30 2012 +0200
+
+    Grüße nur proggen.org statt der Welt
+
+commit d43e63bddd93c3db0e3d1b94f0770ec1808c4ed5
+Author: Alexander Korsunsky <fat.lobyte9@gmail.com>
+Date:   Thu Jun 28 11:20:55 2012 +0200
+
+    Makefile hinzugefügt
+</code>
+
+Eure Ausgabe sollte von meiner Ausgabe abweichen, aber Ähnlich aussehen. Sehen wir sie uns mal genauer an:
+
+Die Ausgabe ist unterteilt in mehrere Abschnitte, von denen jeder einem Commit entspricht. Dort wird der Hash des Commits, der Autor, das Datum und die Commitnachricht angezeigt, die ihr hoffentlich wiedererkennt.
+
+
+
+===== Commits ansprechen =====
+
+Jeder Commit in Git hat eine eindeutige, 40-Zeichen lange Erkennungs"nummer". Diese wird nicht (wie bei Subversion) einfach inkrementiert, sondern sie ist der SHA1-Hash des Commit-Objektes.
+
+"WAT? Was ist nun ein Commit Objekt?!" Werdet ihr euch Fragen. Hier möchte ich auf ein [[datastruct|späteres Kapitel]] vertrösten, bis dahin reicht es aber zu wissen dass in den Hash 1) Der Inhalt 2) Die Commitnachricht 3) die Zeit und 4) Die Elterncommits eingehen. Das erlaubt es, dass die Geschichte eines Projekts nachvollziehbar und Fälschungssicher als Kette gespeichert wird.
+
+Um einen Commit anzusprechen, könnt ihr nun den gesamten, 40-Zeichen langen Bezeichner verwenden.
+Da dies allerdings ziemlich unhandlich ist, gibt es einige Abkürzungen.
+
+
+Ihr könnt nämlich statt der ganzen 40 Zeichen des Commits auch nur die ersten 6, 5, oder sogar 4 Zeichen angeben. Den Namen könnt ihr so lange verkürzen wie er eindeutig bleibt (gibt es mehrere Commits, die mit den selben Anfangsziffern beginnen, gibts eine Fehlermeldung). In der Regel reicht es, die ersten 5 Zeichen des Commits anzugeben.
+
+
+Des weiteren haben bestimmte commits Namen. Beispielsweise hat der neueste Commit jedes [[branches|Zweiges]] den Namen des Zweiges.
+
+Der neueste Commit des aktuellen Zweiges heißt "HEAD". Der drittneueste Commit heißt "HEAD~2".
+
+Zusätzlich dazu könnt ihr jedem Commit (eigentlich sogar jedem Objekt) einen "Tag" anhängen (''git tag'' FIXME), und diesen so auszeichnen und "wiederfindbar" machen.
+
+
+Überall, wo ihr einen Commit angeben müsst, könnt ihr den Tag, den Zweig, "HEAD", den ganzen oder nur einen Teil des SHA1-Hashes angeben.
+
+Beispielsweise folgende aufrufe sind für mich Äquivalent:
+<code>
+git show bb1d6540e2aec62281effac0074c985c17121849
+git show bb1d
+git show master
+git show HEAD
+</code>
+
+Das war übrigens noch nicht das Ende der Fahnenstange. Alle Möglichkeiten einen Commit anzugeben findet ihr in der [[http://www.kernel.org/pub/software/scm/git/docs/git-rev-parse.html|Hilfeseite von git-rev-parse(1)]] (git help rev-parse, Abschnitt 'SPECIFYING REVISIONS').
+
+
+===== Die "Von-Bis" Syntax =====
+
+
+
+=====  Unterschied zweier Versionen anzeigen (diff) =====
+
+
+===== Ältere Dateiversionen wiederherstellen (checkout) =====
+
+
+===== Ältere Dateiversionen im Index wiederherstellen (reset) =====
+
+
+[[makehis|< Zurück]] | [[start|Index]] | [[branches|Weiter >]]
+------------------------
+
+====== Fortgeschrittene Themen ======
+
+
+===== Überschriebene refs mit der @-Syntax ansprechen =====
+
+===== In der Geschichte der Datei suchen =====
+
+===== Schuldzuweisungen =====
+
+
+[[makehis|< Zurück]] | [[start|Index]] | [[branches|Weiter >]]
+
+------------------------
+
+Hat dir dieser Artikel geholfen? Wenn nicht oder wenn du Verbesserungs- bzw.
+Erweiterungsvorschläge hast, dann schreib das bitte einfach auf die FIXME Diskussionsseite.
+
