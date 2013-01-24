@@ -527,7 +527,7 @@ dem "Kontext", der um die geänderten Zeilen ist. Einen solchen Bereich
 bezeichnet man als Hunk.
 
 Näheres zum Format von Patches findet ihr in der
-[[bash:cmd:diffpatch|Wiki-Seite von Diff/Patch]].
+[[unix:cmd:diffpatch|Wiki-Seite von Diff/Patch]].
 
 
 Mit Git hat man die Möglichkeit, die Änderungen an einer Datei in diesen "Hunks"
@@ -548,7 +548,7 @@ und zwar mit der Taste **s**. Wollt ihr einen Hunk //kleiner// als diese
 Mindestgröße bereitstellen, müsst ihr den Hunk manuell eingben (wählt dazu die
 Option **e**). Ich muss allerdings zugeben, dass ich es noch nie geschafft habe,
 einen solchen manuellen Hunk ordnungsgemäß hinzuzufügen ((wenn ihr es geschafft
-habt, bitte meldet euch im Diskussionsthread! FIXME)).
+habt, bitte meldet euch im [[http://www.proggen.org/forum/viewtopic.php?f=39&t=5321|Diskussionsthread]]!)).
 
 Dabei gibt es noch weitere Optionen, die ihr mit der Taste **?** abfragen könnt.
 
@@ -566,5 +566,5 @@ anderen nicht.
 ------------------------
 
 Hat dir dieser Artikel geholfen? Wenn nicht oder wenn du Verbesserungs- bzw.
-Erweiterungsvorschläge hast, dann schreib das bitte einfach auf die FIXME Diskussionsseite.
+Erweiterungsvorschläge hast, dann schreib das bitte einfach auf die [[http://www.proggen.org/forum/viewtopic.php?f=39&t=5321|Diskussionsseite]].
 
